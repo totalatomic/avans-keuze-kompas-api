@@ -6,16 +6,16 @@ import { VkmService } from "../../../application/vkm/vkm.service";
 @ApiTags('VKM')
 export class VkmController {
   constructor(private readonly vkmService: VkmService) { }
-  @Get('vkm')
+  @Get('')
   @ApiOperation({ summary: 'Get all VKM records' })
   @ApiParam({ name: 'None', required: false, description: 'No parameters needed' })
   async findAll() {
     return this.vkmService.findAll(); //this one returns all vkm record unmodified
   }
-  @Get('vkm/homepage')
+  @Get('/homepage')
   @ApiOperation({ summary: 'Get VKM records for homepage' })
   @ApiParam({ name: 'None', required: false, description: 'No parameters needed' })
   async findForHomepage() {
-    return this.vkmService.findAll(); //this one returns all vkm record by theme
+    return this.vkmService.findallsortedbytheme(); //this one returns all vkm record by theme
   }
 }

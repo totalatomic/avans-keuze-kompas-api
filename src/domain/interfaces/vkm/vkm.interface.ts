@@ -7,5 +7,5 @@ export interface IvkmRepository extends IBaseRepository<VKM> {
   findbyLevel(level: string): Promise<VKM[]>;
   findbyLocation(location: string): Promise<VKM[]>;
   findbystudyCredits(studyCredits: number): Promise<VKM[]>;
-  findbythemeTag(themeTag: string): Promise<VKM[]>;
+  findallsortedbytheme(): Promise<VKM[]>;
 }

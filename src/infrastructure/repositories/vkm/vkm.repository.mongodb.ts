@@ -3,7 +3,6 @@ import { InjectModel } from "@nestjs/mongoose";
 import { VkmSchema, VkmDocument } from '../../../application/vkm/dto';
 import { Model } from "mongoose";
 import { VKM } from "../../../domain/entities";
-
 export class VkmRepositoryMongoDB implements IvkmRepository {
   constructor(
     @InjectModel(VKM.name)
@@ -11,7 +10,9 @@ export class VkmRepositoryMongoDB implements IvkmRepository {
   ) { }
   async findAll(): Promise<VKM[]> {
     // Implementation for fetching all VKM records from MongoDB
-    return this.vkmModel.find();
+    let returnedVkms = await this.vkmModel.find().exec();
+    console.log('Returned VKMs:', returnedVkms);
+    return returnedVkms;
 
   }
   async findById(id: string): Promise<VKM | null> {
@@ -50,8 +51,46 @@ export class VkmRepositoryMongoDB implements IvkmRepository {
     // Implementation for fetching VKM records by study credits from MongoDB
     return [];
   }
-  async findbythemeTag(themeTag: string): Promise<VKM[]> {
+  async findallsortedbytheme(): Promise<VKM[]> {
     // Implementation for fetching VKM records by theme tag from MongoDB
-    return [];
+    return await this.vkmModel.aggregate([
+      {
+        $addFields: {
+          theme_tags_array: {
+            $map: {
+              input: {
+                $split: [
+                  {
+                    $trim: {
+                      input: '$theme_tags',
+                      chars: "[]'"
+                    }
+                  },
+                  ','
+                ]
+              },
+              as: 'tag',
+              in: { $trim: { input: '$$tag' } }
+            }
+          }
+        }
+      },
+      { $unwind: '$theme_tags_array' },
+      {
+        $group: {
+          _id: '$theme_tags_array',
+          modules: { $push: '$$ROOT' },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          theme: '$_id',
+          count: 1,
+          modules: 1,
+          _id: 0
+        }
+      }
+    ]);
   }
 }
