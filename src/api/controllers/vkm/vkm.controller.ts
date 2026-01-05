@@ -12,6 +12,12 @@ export class VkmController {
   async findAll() {
     return this.vkmService.findAll(); //this one returns all vkm record unmodified
   }
+  @Get('GetById/:id')
+  @ApiOperation({ summary: 'Get VKM record by ID' })
+  @ApiParam({ name: 'id', required: true, description: 'VKM ID' })
+  async findById(@Param('id') id: Number) {
+    return this.vkmService.findById(id);
+  }
   @Get('/homepage')
   @ApiOperation({ summary: 'Get VKM records for homepage' })
   @ApiParam({ name: 'None', required: false, description: 'No parameters needed' })

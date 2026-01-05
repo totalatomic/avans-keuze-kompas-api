@@ -1,5 +1,6 @@
 import { BaseEntity } from '../common/index';
 export class VKM extends BaseEntity {
+  id: number;
   shortdescription: string;
   description: string;
   content: string;
