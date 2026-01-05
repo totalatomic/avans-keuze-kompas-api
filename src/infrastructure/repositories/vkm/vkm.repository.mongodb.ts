@@ -11,13 +11,13 @@ export class VkmRepositoryMongoDB implements IvkmRepository {
   async findAll(): Promise<VKM[]> {
     // Implementation for fetching all VKM records from MongoDB
     let returnedVkms = await this.vkmModel.find().exec();
-    console.log('Returned VKMs:', returnedVkms);
     return returnedVkms;
 
   }
-  async findById(id: string): Promise<VKM | null> {
+  async findById(id: Number): Promise<VKM | null> {
     // Implementation for fetching a VKM record by ID from MongoDB
-    return this.vkmModel.findById(id);
+    let returnedVkm = await this.vkmModel.findOne({ id: Number(id) }).exec();
+    return returnedVkm;
   }
   async create(item: VKM): Promise<VKM> {
     // Implementation for creating a new VKM record in MongoDB
