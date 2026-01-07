@@ -4,7 +4,7 @@ export class MSG extends BaseEntity {
     senderName: string;
     receiverId: string;
     title: string;
-    messagetext: string;
+    messageText: string;
     sentAt: Date;
     isRead: boolean;
 }

@@ -1,8 +1,9 @@
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Document } from "mongoose";
 import { IMsgRepository } from "../../../domain/interfaces/";
 import { MSG } from "../../../domain/entities";
-import { MsgDocument } from '../../../application/msg/dto';
+
+export type MsgDocument = MSG & Document;
 
 export class MsgRepositoryMongoDB implements IMsgRepository {
   private msgs: Map<string, MSG> = new Map();
@@ -37,6 +38,7 @@ export class MsgRepositoryMongoDB implements IMsgRepository {
         const result: MSG[] = [];
         this.msgs.forEach((msg) => {
             if (msg.receiverId === receiverId) {
+                msg.isRead = true;
                 result.push(msg);
             }
         });
@@ -55,10 +57,10 @@ export class MsgRepositoryMongoDB implements IMsgRepository {
         return result;
     }
 
-    async findUnreadByReceiverId(receiverId: string, isRead: boolean): Promise<MSG[]> {
+    async findUnreadByReceiverId(receiverId: string): Promise<MSG[]> {
         const result: MSG[] = [];
         this.msgs.forEach((msg) => {
-            if (msg.receiverId === receiverId && msg.isRead === isRead) {
+            if (msg.receiverId === receiverId && msg.isRead === false) {
                 result.push(msg);
             }
         });

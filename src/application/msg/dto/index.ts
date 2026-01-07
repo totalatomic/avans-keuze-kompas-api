@@ -1,1 +1,1 @@
-export * from './msg.dto';
+export * from './create-msg.dto';

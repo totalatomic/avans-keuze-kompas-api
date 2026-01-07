@@ -24,8 +24,8 @@ export class MsgService implements IMsgRepository {
     async findBySenderName(senderName: string): Promise<MSG[]> {
         return this.msgRepository.findBySenderName(senderName);
     }
-    async findUnreadByReceiverId(receiverId: string, isRead: boolean): Promise<MSG[]> {
-        return this.msgRepository.findUnreadByReceiverId(receiverId, isRead);
+    async findUnreadByReceiverId(receiverId: string): Promise<MSG[]> {
+        return this.msgRepository.findUnreadByReceiverId(receiverId);
     }
     async create(msg: MSG): Promise<MSG> {
         return this.msgRepository.create(msg);
