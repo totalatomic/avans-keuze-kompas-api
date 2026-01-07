@@ -1,3 +1,16 @@
+import { Body, Controller, Post, UnauthorizedException } from "@nestjs/common";
+import { LoginUserDto } from '../../../application/user/dto/login-user.dto';
+import { UserDto } from "src/application/user/dto/user.dto";
+import { userService } from '../../../application/user/user.service';
+import { ApiResponse, ApiTags } from "@nestjs/swagger";
+
+@ApiTags('User')
+@Controller('user')
 export class userController {
-  constructor() { }
+  constructor(private UserService: userService) { }
+
+  @Post('login')
+  async loginUser(@Body() user: LoginUserDto): Promise<UserDto | UnauthorizedException> {
+    return this.UserService.login(user);
+  }
 }

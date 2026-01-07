@@ -1,15 +1,50 @@
-import { LoginUserDto } from "./dto";
-import { UserRepositoryMongoDB } from "src/infrastructure/repositories/user";
+import { LoginUserDto, LoginUserResDto } from "./dto";
+import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user";
+import { UserDto } from "./dto/user.dto";
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { AuthService } from "../../infrastructure/auth/auth.service";
+import { User } from '../../domain/entities/user.entity';
 
+@Injectable()
 export class userService {
-  constructor() { }
-  async login(request: LoginUserDto): Promise<void> {
-
+  constructor(
+    @Inject('IUserRepository')
+    private readonly userRepository: UserRepositoryMongoDB,
+    @Inject('IAuthInterface')
+    private readonly authService: AuthService
+  ) { }
+  async login(request: LoginUserDto): Promise<UserDto | UnauthorizedException> {
+    //take the login dto and see if the user exists
+    let user = await this.userRepository.findByEmail(request.email);
+    //if not return not found
+    if (!user) {
+      return new UnauthorizedException('invalid credentials, check your email and password then try again');
+    }
+    //if yes compare hashed passwords via the auth service
+    let match = await this.authService.ValidatePassword(request.password, user.password);
+    if (!match) {
+      return new UnauthorizedException('invalid credentials, check your email and password then try again');
+    }
+    //if they match return user dto + token
+    let token = await this.authService.GenerateToken(user);
+    return {
+      fullName: user.firstname,
+      email: user.email,
+      studentnumber: '',
+      isStudent: false,
+      favoriteVKMs: [],
+      enrolledVKMs: [],
+      aiReccomendedVKMs: [],
+      Token: token
+    };
   }
   async logout(): Promise<void> {
-
+    //end the user session or invalidate the token
+    //return a positive response
   }
   async getUser(): Promise<void> {
-    //implementation here
+    //get the user id from the token
+    //fetch user data from the repository
+    //return user dto
   }
 }

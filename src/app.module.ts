@@ -6,6 +6,8 @@ import { VkmSchema } from "src/application/vkm/dto";
 import { VkmModule } from "./api/controllers/vkm/vkm.module";
 import { ConfigModule } from "@nestjs/config";
 import { envConfiguration } from './infrastructure/env';
+import { userController, UserModule } from "./api/controllers/user";
+import { userService } from "./application/user";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,11 +19,13 @@ import { envConfiguration } from './infrastructure/env';
       useFactory: () => ({
         uri: envConfiguration().database.url
       })
-    }), VkmModule
+    }), VkmModule,
+    UserModule,
   ],
-  controllers: [VkmController],
+  controllers: [VkmController, userController],
   providers: [
-    VkmService
+    VkmService,
+    userService
   ]
 })
 export class AppModule { }
