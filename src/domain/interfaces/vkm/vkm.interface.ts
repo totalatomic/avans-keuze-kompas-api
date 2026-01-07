@@ -1,5 +1,5 @@
 import { IBaseRepository } from "../common";
-import { VKM } from "../../entities/index";
+import { VKM } from "../../entities";
 
 export interface IvkmRepository extends IBaseRepository<VKM> {
   findbyName(name: string): Promise<VKM | null>;
