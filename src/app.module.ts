@@ -8,6 +8,9 @@ import { ConfigModule } from "@nestjs/config";
 import { envConfiguration } from './infrastructure/env';
 import { userController, UserModule } from "./api/controllers/user";
 import { userService } from "./application/user";
+import { MsgController } from "./api/controllers/msg/msg.controller";
+import { MsgService } from "./application/msg/msg.service";
+import { MsgModule } from "./api/controllers/msg/msg.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,13 +22,16 @@ import { userService } from "./application/user";
       useFactory: () => ({
         uri: envConfiguration().database.url
       })
-    }), VkmModule,
+    }),
+    VkmModule,
     UserModule,
+    MsgModule
   ],
-  controllers: [VkmController, userController],
+  controllers: [VkmController, userController, MsgController],
   providers: [
     VkmService,
-    userService
+    userService,
+    MsgService
   ]
 })
 export class AppModule { }
