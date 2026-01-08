@@ -1,6 +1,18 @@
+import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../../domain/entities';
 import { IUserRepository } from '../../../domain/interfaces';
+import { Model, ObjectId } from 'mongoose';
+import { UserSchemaDocument } from 'src/application/user/dto/user.schema.dto';
+import { Injectable } from '@nestjs/common';
+import { UserDto } from 'src/application/user/dto/user.dto';
+import { LoginUserResDto } from '../../../application/user/dto'
+
+@Injectable()
 export class UserRepositoryMongoDB implements IUserRepository {
+  constructor(
+    @InjectModel(User.name)
+    private readonly userModel: Model<UserSchemaDocument>
+  ) { }
   async findById(id: number): Promise<User | null> {
     // Implementation for fetching a User by ID from MongoDB
     return null;
@@ -17,9 +29,17 @@ export class UserRepositoryMongoDB implements IUserRepository {
     // Implementation for deleting a User from MongoDB
     return true;
   }
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<UserSchemaDocument | null> {
     // Implementation for fetching a User by email from MongoDB
-    return null;
+    let retUser = await this.userModel.findOne({
+      email: email
+    }).select('+password').lean();
+
+    if (!retUser) {
+      return null;
+    }
+    return retUser;
+
   }
   async findAll(): Promise<User[]> {
     // Implementation for fetching all Users from MongoDB
