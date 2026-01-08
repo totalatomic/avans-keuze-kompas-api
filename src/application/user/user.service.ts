@@ -12,4 +12,12 @@ export class userService {
   async getUser(): Promise<void> {
     //implementation here
   }
+  async findById(userId: number): Promise<any> {
+    const userRepository = new UserRepositoryMongoDB();
+    return await userRepository.findById(userId);
+  }
+  async setRecommendations(userId: string, recommendations: any) {
+    const userRepository = new UserRepositoryMongoDB();
+    await userRepository.setRecommendations(userId, recommendations);
+  }
 }

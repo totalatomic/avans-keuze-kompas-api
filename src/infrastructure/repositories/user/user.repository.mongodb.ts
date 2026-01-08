@@ -45,5 +45,7 @@ export class UserRepositoryMongoDB implements IUserRepository {
     // Implementation for fetching AI recommended VKMs for the user
     return null;
   }
-
+  async setRecommendations(userId: string, recommendations: any): Promise<void> {
+    // Implementation for setting AI recommendations for the user
+  }
 }

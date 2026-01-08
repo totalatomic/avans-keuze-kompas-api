@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Param, Patch, Delete, NotFoundException } from '@nestjs/common';
 import { RecommendationsService } from 'src/application/ai/recommendation.service';
+import { QuestionnaireDto } from '../ai/dto/questionair.dto';
 
 @Controller('recommendations')
 export class RecommendationController {
@@ -8,8 +9,10 @@ export class RecommendationController {
   ) {}
 
   @Post()
-  async generate(@Body() body: { userId: string }) {
-    // Controller is only a wrapper
-    return this.recommendations.execute(body.userId);
+  async generate(@Body() body: QuestionnaireDto) {
+    return this.recommendations.requestRecommendation(
+      body.userId,
+      body.questionnaire,
+    );
   }
 }
