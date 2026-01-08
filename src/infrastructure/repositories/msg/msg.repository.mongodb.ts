@@ -13,8 +13,12 @@ export class MsgRepositoryMongoDB implements IMsgRepository {
         private readonly msgModel: Model<MsgDocument>,
     ) { }
 
-    async findById(id: string): Promise<MSG | null> {
-        return null;
+
+
+    async findById(id: string): Promise<MSG | null>;
+    async findById(id: number): Promise<MSG | null>;
+    async findById(id: string | number): Promise<MSG | null> {
+        return this.msgs.get(String(id)) || null;
     }
 
     async findAll(): Promise<MSG[]> {
@@ -22,7 +26,7 @@ export class MsgRepositoryMongoDB implements IMsgRepository {
     }
 
     async create(msg: MSG): Promise<MSG> {
-        this.msgs.set(msg.id, msg);
+        this.msgs.set(msg._id, msg);
         return msg;
     }
 
@@ -41,6 +45,9 @@ export class MsgRepositoryMongoDB implements IMsgRepository {
                 msg.isRead = true;
                 result.push(msg);
             }
+            else {
+                throw new Error('No messages found for this receiver.');
+            }
         });
 
         return result;
@@ -52,6 +59,9 @@ export class MsgRepositoryMongoDB implements IMsgRepository {
             if (msg.senderName === senderName) {
                 result.push(msg);
             }
+            else {
+                throw new Error('No messages found from this sender.');
+            }
         });
 
         return result;
@@ -62,6 +72,9 @@ export class MsgRepositoryMongoDB implements IMsgRepository {
         this.msgs.forEach((msg) => {
             if (msg.receiverId === receiverId && msg.isRead === false) {
                 result.push(msg);
+            }
+            else {
+                throw new Error('No unread messages found for this receiver.');
             }
         });
 

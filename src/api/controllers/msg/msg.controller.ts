@@ -5,6 +5,7 @@ import { CreateMsgDto } from '../../../application/msg/dto/create-msg.dto';
 import { UUID } from 'mongodb';
 
 import { MSG } from 'src/domain/entities';
+import { BaseEntity } from '../../../domain/common/base.entity';
 
 @Controller('msg')
 @ApiTags('MSG')
@@ -33,7 +34,7 @@ export class MsgController {
     @ApiParam({ name: 'receiverId', required: true, description: 'Receiver ID to send the MSG to' })
     async sendMsgToReceiver(@Param('receiverId') receiverId: string, @Body() msgData: CreateMsgDto) {
         const newMsg = new MSG();
-        newMsg.id = new UUID().toString();
+        newMsg._id = new UUID().toString();
         newMsg.senderName = msgData.senderName;
         newMsg.receiverId = receiverId;
         newMsg.title = msgData.title;

@@ -1,14 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { MsgRepositoryMongoDB } from "src/infrastructure/repositories/msg";
 import { MSG } from "src/domain/entities";
-import { IMsgRepository } from "src/domain/interfaces";
 
 @Injectable()
-export class MsgService implements IMsgRepository {
+export class MsgService {
     constructor(private readonly msgRepository: MsgRepositoryMongoDB) { }
     async findAll(): Promise<MSG[]> {
         return this.msgRepository.findAll();
     }
+
+    
+    
     async findById(id: string): Promise<MSG | null> {
         return this.msgRepository.findById(id);
     }
