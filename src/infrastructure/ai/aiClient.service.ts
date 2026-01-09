@@ -1,10 +1,11 @@
 import { Injectable, HttpException } from '@nestjs/common';
+import { IQuestionnaire } from '../../domain/interfaces/ai/questionaire.interface.js';
 
 @Injectable()
 export class AiClientService {
   private readonly baseUrl = 'http://localhost:8001';
 
-  async recommend(questionnaire: unknown) {   // Define the type of questionnaire
+  async recommend(questionnaire: IQuestionnaire) {
     const response = await fetch(`${this.baseUrl}/recommend`, {
       method: 'POST',
       headers: {

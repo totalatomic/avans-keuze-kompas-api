@@ -1,7 +1,10 @@
 import { Controller, Get, Post, Body, Param, Patch, Delete, NotFoundException } from '@nestjs/common';
 import { RecommendationsService } from 'src/application/ai/recommendation.service';
-import { QuestionnaireDto } from '../ai/dto/questionair.dto';
+import type { RecommendationDto } from '../../../application/ai/dto/recommendation.dto';
+import { QuestionnaireDto } from './dto/questionair.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('AI Recommendations')
 @Controller('recommendations')
 export class RecommendationController {
   constructor(
@@ -9,10 +12,12 @@ export class RecommendationController {
   ) {}
 
   @Post()
-  async generate(@Body() body: QuestionnaireDto) {
+  async generate(@Body() body: QuestionnaireDto): Promise<RecommendationDto> {
+    const { userId, ...answers } = body;
+    
     return this.recommendations.requestRecommendation(
-      body.userId,
-      body.questionnaire,
+      userId,
+      answers,
     );
   }
 }

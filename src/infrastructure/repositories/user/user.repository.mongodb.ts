@@ -6,6 +6,7 @@ import { UserSchemaDocument } from 'src/application/user/dto/user.schema.dto';
 import { Injectable } from '@nestjs/common';
 import { UserDto } from 'src/application/user/dto/user.dto';
 import { LoginUserResDto } from '../../../application/user/dto'
+import { RecommendationDto } from '../../../application/ai/dto/recommendation.dto';
 
 @Injectable()
 export class UserRepositoryMongoDB implements IUserRepository {
@@ -61,11 +62,14 @@ export class UserRepositoryMongoDB implements IUserRepository {
     // Implementation for fetching user's enrolled VKMs
     return null;
   }
-  async getAiReccomendedVKMs(userId: string): Promise<User | null> {
+  async getAiReccomendedVKMs(userId: number): Promise<any | null> {
     // Implementation for fetching AI recommended VKMs for the user
     return null;
   }
-  async setRecommendations(userId: string, recommendations: any): Promise<void> {
-    // Implementation for setting AI recommendations for the user
+  async setRecommendations(userId: number, recommendations: RecommendationDto,): Promise<void> {
+    await this.userModel.updateOne(
+      { userId },
+      { $set: { recommendations } }
+    );
   }
 }
