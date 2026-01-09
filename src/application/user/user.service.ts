@@ -4,12 +4,16 @@ import { UserDto } from "./dto/user.dto";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "../../infrastructure/auth/auth.service";
 import { User } from '../../domain/entities/user.entity';
+import { AddFavoriteDto } from "./dto/add-favorites.dto";
+import { VkmRepositoryMongoDB } from "src/infrastructure/repositories/vkm";
 
 @Injectable()
 export class userService {
   constructor(
     @Inject('IUserRepository')
     private readonly userRepository: UserRepositoryMongoDB,
+    @Inject('IVKMRepository')
+    private readonly vkmRepository: VkmRepositoryMongoDB,
     @Inject('IAuthInterface')
     private readonly authService: AuthService
   ) { }
@@ -46,5 +50,19 @@ export class userService {
     //get the user id from the token
     //fetch user data from the repository
     //return user dto
+  }
+  async addFavorite(VkmId: number, Id: string): Promise<void> {
+    const user = await this.userRepository.findByEmail(Id);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const vkm = await this.vkmRepository.findById(VkmId);
+    if (!vkm) {
+      throw new UnauthorizedException('VKM not found');
+    }
+
+    user.favoriteVKMs.push(vkm);
+    await this.userRepository.update(Id, user);
   }
 }
