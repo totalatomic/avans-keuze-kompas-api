@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { MsgRepositoryMongoDB } from "src/infrastructure/repositories/mgs/msg.repository.mongodb";
+import { MsgRepositoryMongoDB } from "src/infrastructure/repositories/msg.repository.mongodb";
 import { MSG } from "src/domain/entities";
 
 @Injectable()

@@ -1,8 +1,8 @@
-import { IvkmRepository } from "../../../domain/interfaces/vkm/vkm.interface";
+import { IvkmRepository } from "../../domain/interfaces/vkm/vkm.interface";
 import { InjectModel } from "@nestjs/mongoose";
-import { VkmSchema, VkmDocument } from '../../../application/vkm/dto';
+import { VkmSchema, VkmDocument } from '../../application/dto/vkm';
 import { Model } from "mongoose";
-import { VKM } from "../../../domain/entities";
+import { VKM } from "../../domain/entities";
 export class VkmRepositoryMongoDB implements IvkmRepository {
   constructor(
     @InjectModel(VKM.name)

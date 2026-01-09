@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UnauthorizedException } from "@nestjs/common";
-import { LoginUserDto } from '../../../application/user/dto/login-user.dto';
-import { UserDto } from "src/application/user/dto/user.dto";
-import { userService } from '../../../application/user/user.service';
+import { LoginUserDto } from '../../../application/dto/user/login-user.dto';
+import { UserDto } from "src/application/dto/user/user.dto";
+import { userService } from '../../../application/service/user.service';
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiTags('User')

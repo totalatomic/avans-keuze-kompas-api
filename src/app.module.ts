@@ -1,15 +1,15 @@
 import { Module } from "@nestjs/common";
-import { VkmService } from "src/application/vkm";
+import { VkmService } from "./application/service/vkm.service";
 import { VkmController } from "./api/controllers/vkm/vkm.controller";
 import { MongooseModule } from "@nestjs/mongoose";
-import { VkmSchema } from "src/application/vkm/dto";
+import { VkmSchema } from "src/application/dto/vkm";
 import { VkmModule } from "./api/controllers/vkm/vkm.module";
 import { ConfigModule } from "@nestjs/config";
 import { envConfiguration } from './infrastructure/env';
 import { userController, UserModule } from "./api/controllers/user";
-import { userService } from "./application/user";
+import { userService } from "./application/service/user.service";
 import { MsgController } from "./api/controllers/msg/msg.controller";
-import { MsgService } from "./application/msg/msg.service";
+import { MsgService } from "./application/service/msg.service";
 import { MsgModule } from "./api/controllers/msg/msg.module";
 @Module({
   imports: [

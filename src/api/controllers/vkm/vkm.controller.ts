@@ -1,6 +1,6 @@
 import { Controller, Body, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
-import { VkmService } from "../../../application/vkm/vkm.service";
+import { VkmService } from "../../../application/service/vkm.service";
 
 @Controller('vkm')
 @ApiTags('VKM')

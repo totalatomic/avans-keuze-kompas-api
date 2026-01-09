@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { VkmController } from "./vkm.controller";
-import { VkmService } from "../../../application/vkm/vkm.service";
-import { VkmRepositoryMongoDB } from "../../../infrastructure/repositories/vkm/vkm.repository.mongodb";
-import { VkmSchema } from "src/application/vkm";
+import { VkmService } from "../../../application/service/vkm.service";
+import { VkmRepositoryMongoDB } from "../../../infrastructure/repositories/vkm.repository.mongodb";
+import { VkmSchema } from "src/application/dto/vkm";
 import { VKM } from "src/domain/entities";
 import { MongooseModule } from "@nestjs/mongoose";
 @Module({
