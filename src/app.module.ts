@@ -10,6 +10,9 @@ import { userController, UserModule } from "./api/controllers/user";
 import { userService } from "./application/user";
 import { RecommendationModule } from "./api/controllers/ai/recommendation.module";
 import { RecommendationsService } from "./application/ai/recommendation.service";
+import { MsgController } from "./api/controllers/msg/msg.controller";
+import { MsgService } from "./application/msg/msg.service";
+import { MsgModule } from "./api/controllers/msg/msg.module";
 
 @Module({
   imports: [
@@ -22,14 +25,17 @@ import { RecommendationsService } from "./application/ai/recommendation.service"
       useFactory: () => ({
         uri: envConfiguration().database.url
       })
-    }), VkmModule,
+    }),
+    VkmModule,
     UserModule,
-    RecommendationModule
+    RecommendationModule,
+    MsgModule
   ],
-  controllers: [VkmController, userController],
+  controllers: [VkmController, userController, MsgController],
   providers: [
     VkmService,
-    userService  
-  ],
+    userService,
+    MsgService
+  ]
 })
 export class AppModule { }
