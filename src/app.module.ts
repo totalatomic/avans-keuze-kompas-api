@@ -11,6 +11,7 @@ import { userService } from "./application/service/user.service";
 import { MsgController } from "./api/controllers/msg/msg.controller";
 import { MsgService } from "./application/service/msg.service";
 import { MsgModule } from "./api/controllers/msg/msg.module";
+import { FavoriteModule } from "./api/controllers/favorite/favorites.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,7 +26,8 @@ import { MsgModule } from "./api/controllers/msg/msg.module";
     }),
     VkmModule,
     UserModule,
-    MsgModule
+    MsgModule,
+    FavoriteModule,
   ],
   controllers: [VkmController, userController, MsgController],
   providers: [

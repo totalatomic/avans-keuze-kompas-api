@@ -63,5 +63,10 @@ export class UserRepositoryMongoDB implements IUserRepository {
     // Implementation for fetching AI recommended VKMs for the user
     return null;
   }
-
+  async addFavoriteVKM(userId: string, vkmId: number): Promise<void> {
+    await this.userModel.updateOne(
+      { _id: userId },
+      { $addToSet: { favoriteVKMs: vkmId } }
+    ).exec();
+  }
 }

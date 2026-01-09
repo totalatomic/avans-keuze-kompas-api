@@ -5,15 +5,15 @@ import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "../../infrastructure/auth/auth.service";
 import { User } from '../../domain/entities/user.entity';
 import { UserSchemaDto } from '../dto/user/user.schema.dto';
-import { AddFavoriteDto } from "./dto/add-favorites.dto";
-import { VkmRepositoryMongoDB } from "src/infrastructure/repositories/vkm";
+import { AddFavoriteDto } from "../dto/user/add-favorites.dto";
+import { VkmRepositoryMongoDB } from "../../infrastructure/repositories/vkm.repository.mongodb";
 
 @Injectable()
 export class userService {
   constructor(
     @Inject('IUserRepository')
     private readonly userRepository: UserRepositoryMongoDB,
-    @Inject('IVKMRepository')
+    @Inject('IvkmRepository')
     private readonly vkmRepository: VkmRepositoryMongoDB,
     @Inject('IAuthInterface')
     private readonly authService: AuthService
@@ -60,8 +60,6 @@ export class userService {
     if (!vkm) {
       throw new UnauthorizedException('VKM not found');
     }
-
-    user.favoriteVKMs.push(vkm);
-    await this.userRepository.update(Id, user);
+    await this.userRepository.addFavoriteVKM(Id, VkmId);
   }
 }

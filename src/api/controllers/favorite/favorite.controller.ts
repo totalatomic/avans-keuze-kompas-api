@@ -1,22 +1,17 @@
-import { Body, Controller, Get, Post, UnauthorizedException } from "@nestjs/common";
-import { LoginUserDto } from '../../../application/user/dto/login-user.dto';
-import { UserDto } from "src/application/user/dto/user.dto";
-import { userService } from '../../../application/user/user.service';
+import { Body, Controller, Get, Post, Req, UnauthorizedException } from "@nestjs/common";
+import { userService } from 'src/application/service/user.service';
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
-import { AddFavoriteDto } from "src/application/user/dto/add-favorites.dto";
+import { AddFavoriteDto } from "src/application/dto/user/add-favorites.dto";
+import { AuthService } from "src/infrastructure/auth/auth.service";
 
 
-@ApiTags('favorites')
-@Controller('favorites')
+@ApiTags('favorite')
+@Controller('favorite')
 export class FavoriteController {
-  constructor(private UserService: userService) { }
+  constructor(private userService: userService, private authService: AuthService) { }
 
   @Post('favoriteAdd')
-  async addFavorite(@Body() VkmId: number): Promise<void> {
-    this.UserService.addFavorite(VkmId, Id);
-  }
-  @Get('favoritesGet')
-  async getFavorites(@Body() user: LoginUserDto): Promise<UserDto | UnauthorizedException> {
-    return this.UserService.login(user);
+  async addFavorite(@Body() VkmId: number, @Req() req): Promise<void> {
+    await this.userService.addFavorite(VkmId, req.user.id);
   }
 }
