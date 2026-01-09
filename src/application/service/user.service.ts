@@ -1,9 +1,10 @@
-import { LoginUserDto, LoginUserResDto } from "./dto";
-import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user";
-import { UserDto } from "./dto/user.dto";
+import { LoginUserDto, LoginUserResDto } from "../dto/user";
+import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user.repository.mongodb";
+import { UserDto } from "../dto/user/user.dto";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "../../infrastructure/auth/auth.service";
 import { User } from '../../domain/entities/user.entity';
+import { UserSchemaDto } from '../dto/user/user.schema.dto';
 import { AddFavoriteDto } from "./dto/add-favorites.dto";
 import { VkmRepositoryMongoDB } from "src/infrastructure/repositories/vkm";
 
@@ -31,16 +32,7 @@ export class userService {
     }
     //if they match return user dto + token
     let token = await this.authService.GenerateToken(user);
-    return {
-      fullName: user.firstname,
-      email: user.email,
-      studentnumber: '',
-      isStudent: false,
-      favoriteVKMs: [],
-      enrolledVKMs: [],
-      aiReccomendedVKMs: [],
-      Token: token
-    };
+    return this.buildUserDto(user, token);
   }
   async logout(): Promise<void> {
     //end the user session or invalidate the token
@@ -50,6 +42,13 @@ export class userService {
     //get the user id from the token
     //fetch user data from the repository
     //return user dto
+  }
+  buildUserDto(resUser: UserSchemaDto, token: string): UserDto {
+    let newUserDto = new UserDto(
+      resUser
+    );
+    newUserDto.Token = token;
+    return newUserDto
   }
   async addFavorite(VkmId: number, Id: string): Promise<void> {
     const user = await this.userRepository.findByEmail(Id);

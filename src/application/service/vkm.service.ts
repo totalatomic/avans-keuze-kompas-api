@@ -1,7 +1,7 @@
 import { IvkmRepository } from "../../domain/interfaces/vkm/vkm.interface";
 import { Injectable, Inject, NotFoundException } from "@nestjs/common";
-import { VkmDocument, VkmSchema } from "./dto";
-import { VkmRepositoryMongoDB } from "../../infrastructure/repositories/vkm";
+import { VkmDocument, VkmSchema } from "../dto/vkm";
+import { VkmRepositoryMongoDB } from "../../infrastructure/repositories/vkm.repository.mongodb";
 import { VKM } from "src/domain/entities";
 
 @Injectable()

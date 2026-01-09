@@ -1,11 +1,9 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '../../../domain/entities';
-import { IUserRepository } from '../../../domain/interfaces';
+import { User } from '../../domain/entities/user.entity';
+import { IUserRepository } from '../../domain/interfaces';
 import { Model, ObjectId } from 'mongoose';
-import { UserSchemaDocument } from 'src/application/user/dto/user.schema.dto';
+import { UserSchemaDocument } from 'src/application/dto/user/user.schema.dto';
 import { Injectable } from '@nestjs/common';
-import { UserDto } from 'src/application/user/dto/user.dto';
-import { LoginUserResDto } from '../../../application/user/dto'
 
 @Injectable()
 export class UserRepositoryMongoDB implements IUserRepository {
@@ -33,7 +31,7 @@ export class UserRepositoryMongoDB implements IUserRepository {
     // Implementation for fetching a User by email from MongoDB
     let retUser = await this.userModel.findOne({
       email: email
-    }).select('+password').lean();
+    }).exec();
 
     if (!retUser) {
       return null;
