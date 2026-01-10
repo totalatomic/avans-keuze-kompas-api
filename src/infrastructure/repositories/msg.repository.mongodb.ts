@@ -1,8 +1,8 @@
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Document } from "mongoose";
-import { IMsgRepository } from "../../../domain/interfaces/";
-import { MSG } from "../../../domain/entities";
-import { MsgSchemaDocument } from "src/application/msg";
+import { IMsgRepository } from "../../domain/interfaces";
+import { MSG } from "../../domain/entities";
+import { MsgSchemaDocument } from "src/application/dto/msg";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

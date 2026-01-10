@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Body, Post, Delete, Patch } from '@nestjs/common';
 import { ApiTags, ApiParam, ApiOperation } from '@nestjs/swagger';
-import { MsgService } from '../../../application/msg';
-import { CreateMsgDto } from '../../../application/msg/dto';
+import { MsgService } from '../../../application/service/msg.service';
+import { CreateMsgDto } from '../../../application/dto/msg';
 import { UUID } from 'mongodb';
 
 import { MSG } from 'src/domain/entities';

@@ -5,7 +5,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { EnvConfigModel } from '../env'
-import { UserSchemaDocument } from "src/application/user";
+import { UserSchemaDocument } from "src/application/dto/user";
 
 @Injectable()
 export class AuthService implements IAuthInterface {
@@ -26,12 +26,11 @@ export class AuthService implements IAuthInterface {
     return null;
   }
   async GenerateToken(user: UserSchemaDocument): Promise<string> {
-    console.log(user);
     const accesstoken = await this.jwtService.signAsync({
       user: {
         id: user._id,
         email: user.email,
-        username: user.firstname,
+        username: `${user.first_name} ${user.prefix} ${user.last_name}`,
 
       }
     })

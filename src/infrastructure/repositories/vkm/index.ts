@@ -1,1 +1,0 @@
-export * from './vkm.repository.mongodb';

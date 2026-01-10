@@ -1,11 +1,12 @@
-import { LoginUserDto, LoginUserResDto } from "./dto";
-import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user";
-import { UserDto } from "./dto/user.dto";
+import { LoginUserDto, LoginUserResDto } from "../dto/user";
+import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user.repository.mongodb";
+import { UserDto } from "../dto/user/user.dto";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "../../infrastructure/auth/auth.service";
 import { RecommendationDto } from "../ai/dto/recommendation.dto";
 import { User } from '../../domain/entities/user.entity';
 import { QuestionnaireAnswers } from "../../domain/common/questionairAnswers.dto"; 
+import { UserSchemaDto } from '../dto/user/user.schema.dto';
 
 @Injectable()
 export class userService {
@@ -29,16 +30,7 @@ export class userService {
     }
     //if they match return user dto + token
     let token = await this.authService.GenerateToken(user);
-    return {
-      fullName: user.firstname,
-      email: user.email,
-      studentnumber: '',
-      isStudent: false,
-      favoriteVKMs: [],
-      enrolledVKMs: [],
-      aiReccomendedVKMs: [],
-      Token: token
-    };
+    return this.buildUserDto(user, token);
   }
   async logout(): Promise<void> {
     //end the user session or invalidate the token
@@ -57,5 +49,12 @@ export class userService {
   }
   async setRecommendations(userId: string, RecommendationDto: RecommendationDto) {
     await this.userRepository.setRecommendations(userId, RecommendationDto);
+  }
+  buildUserDto(resUser: UserSchemaDto, token: string): UserDto {
+    let newUserDto = new UserDto(
+      resUser
+    );
+    newUserDto.Token = token;
+    return newUserDto
   }
 }
