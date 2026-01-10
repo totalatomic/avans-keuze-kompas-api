@@ -15,7 +15,7 @@ export class RecommendationsService {
   ) {}
 
   async requestRecommendation(
-    userId: number,
+    userId: string,
     answers: IQuestionnaire,
   ): Promise<RecommendationDto> {
 

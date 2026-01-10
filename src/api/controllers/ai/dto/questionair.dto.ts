@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class QuestionnaireDto {
   @ApiProperty({ example: 123 })
-  userId: number;
+  userId: string;
 
   @ApiProperty({ type: QuestionnaireAnswers })
   q1: QuestionnaireAnswers;

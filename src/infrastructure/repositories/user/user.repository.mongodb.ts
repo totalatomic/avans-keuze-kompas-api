@@ -1,9 +1,9 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../../domain/entities';
 import { IUserRepository } from '../../../domain/interfaces';
-import { Model, ObjectId } from 'mongoose';
+import { Model, ObjectId, Types } from 'mongoose';
 import { UserSchemaDocument } from 'src/application/user/dto/user.schema.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserDto } from 'src/application/user/dto/user.dto';
 import { LoginUserResDto } from '../../../application/user/dto'
 import { RecommendationDto } from '../../../application/ai/dto/recommendation.dto';
@@ -66,10 +66,20 @@ export class UserRepositoryMongoDB implements IUserRepository {
     // Implementation for fetching AI recommended VKMs for the user
     return null;
   }
-  async setRecommendations(userId: number, recommendations: RecommendationDto,): Promise<void> {
-    await this.userModel.updateOne(
-      { userId },
-      { $set: { recommendations } }
-    );
+  async setRecommendations(userId: string, recommendations: number[] ): Promise<void> {
+    console.log('Saving to DB:', recommendations, Array.isArray(recommendations));
+
+  const updated = await this.userModel.findByIdAndUpdate(
+    userId,                                 
+    { $set: { ai_reccomended_vkms: recommendations } },
+    { new: true },
+  );
+
+    console.log('Updating user:', userId);
+
+    if (updated === null) {
+    throw new NotFoundException('User not found');
+    }
+    console.log('Updated user:', updated);
   }
 }

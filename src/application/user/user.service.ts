@@ -55,7 +55,7 @@ export class userService {
   async findById(userId: number): Promise<any> {
     return await this.userRepository.findById(userId);
   }
-  async setRecommendations(userId: number, RecommendationDto: RecommendationDto) {
+  async setRecommendations(userId: string, RecommendationDto: RecommendationDto) {
     await this.userRepository.setRecommendations(userId, RecommendationDto);
   }
 }
