@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { userService } from '../user/user.service';
+import { userService } from '../service/user.service';
 import { AiClientService } from '../../infrastructure/ai/aiClient.service';
 import { NotFoundException } from '@nestjs/common';
 import { QuestionnaireAnswers } from '../../domain/common/questionairAnswers.dto.js';

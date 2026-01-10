@@ -65,9 +65,13 @@ export class UserRepositoryMongoDB implements IUserRepository {
   }
   async setRecommendations(userId: string, recommendations: number[] ): Promise<void> {
     console.log('Saving to DB:', recommendations, Array.isArray(recommendations));
+    console.log('Trying to update user with id:', userId);
+    console.log('Collection name:', this.userModel.collection.name);
+    
+    console.log('Is valid ObjectId:', Types.ObjectId.isValid(userId));
 
   const updated = await this.userModel.findByIdAndUpdate(
-    userId,                                 
+    new Types.ObjectId(userId),                                 
     { $set: { ai_reccomended_vkms: recommendations } },
     { new: true },
   );
