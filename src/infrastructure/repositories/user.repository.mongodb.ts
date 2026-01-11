@@ -3,7 +3,7 @@ import { User } from '../../domain/entities/user.entity';
 import { IUserRepository } from '../../domain/interfaces';
 import { Model, ObjectId, Types } from 'mongoose';
 import { UserSchemaDocument } from 'src/application/dto/user/user.schema.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { stringToObjectId } from '../utils/string_to_Objectid';
 @Injectable()
 export class UserRepositoryMongoDB implements IUserRepository {

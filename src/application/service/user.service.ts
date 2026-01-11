@@ -48,7 +48,7 @@ export class userService {
   async getRecommendations(userId: string): Promise<any> {
     return await this.userRepository.getAiReccomendedVKMs(userId);
   }
-  async findById(userId: number): Promise<any> {
+  async findById(userId: string): Promise<any> {
     return await this.userRepository.findById(userId);
   }
   async setRecommendations(userId: string, RecommendationDto: RecommendationDto) {
