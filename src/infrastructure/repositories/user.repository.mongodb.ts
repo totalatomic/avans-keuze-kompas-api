@@ -75,10 +75,15 @@ export class UserRepositoryMongoDB implements IUserRepository {
       throw new NotFoundException('User not found');
     }
   }
-  async addFavoriteVKM(userId: string, vkmId: number): Promise<void> {
-    await this.userModel.updateOne(
-      { _id: userId },
-      { $addToSet: { favoriteVKMs: vkmId } }
-    ).exec();
+  async addFavoriteVKM(userId: string, favorites: number[]): Promise<void> {
+    const updated = await this.userModel.findByIdAndUpdate(
+      new Types.ObjectId(userId),
+      { $set: { favorite_vkms: favorites } },
+      { new: true },
+    );
+
+    if (updated === null) {
+      throw new NotFoundException('User not found');
+    }
   }
 }

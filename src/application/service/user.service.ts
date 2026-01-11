@@ -8,8 +8,8 @@ import { RecommendationDto } from "../dto/ai/recommendation.dto";
 import { User } from '../../domain/entities/user.entity';
 import { QuestionnaireAnswers } from "../../domain/common/questionairAnswers.dto";
 import { UserSchemaDto } from '../dto/user/user.schema.dto';
-import { AddFavoriteDto } from "../dto/user/add-favorites.dto";
 import { VkmRepositoryMongoDB } from "../../infrastructure/repositories/vkm.repository.mongodb";
+import { FavoritesDto } from "../dto/favorites/favorites.dto";
 
 @Injectable()
 export class userService {
@@ -62,16 +62,10 @@ export class userService {
     newUserDto.Token = token;
     return newUserDto
   }
-  async addFavorite(VkmId: number, Id: string): Promise<void> {
-    const user = await this.userRepository.findByEmail(Id);
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    const vkm = await this.vkmRepository.findById(VkmId);
-    if (!vkm) {
-      throw new UnauthorizedException('VKM not found');
-    }
-    await this.userRepository.addFavoriteVKM(Id, VkmId);
+  async addFavorite(userId: string, favoritesDto: FavoritesDto): Promise<void> {
+    await this.userRepository.addFavoriteVKM(userId, favoritesDto);
+  }
+  async getFavorites(userId: string): Promise<any> {
+    return await this.userRepository.getFavoriteVKMs(userId);
   }
 }
