@@ -1,10 +1,13 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { IQuestionnaire } from '../../domain/interfaces/ai/questionaire.interface.js';
+import { ConfigService } from '@nestjs/config/dist/index.js';
 
 @Injectable()
 export class AiClientService {
-  private readonly baseUrl = 'http://localhost:8001';
-
+constructor(private readonly configService: ConfigService) {
+  this.baseUrl = this.configService.get<string>('AI_BASE_URL_PROD') || 'http://localhost:8001';   // AI_BASE_URL_PROD online url 
+}                                                                                                 
+private readonly baseUrl: string;
   async recommend(questionnaire: IQuestionnaire) {
     const response = await fetch(`${this.baseUrl}/recommend`, {
       method: 'POST',
