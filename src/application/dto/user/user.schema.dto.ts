@@ -18,8 +18,8 @@ export class UserSchemaDto {
   @Prop({ type: [Number], default: [] })
   ai_reccomended_vkms: number[];
 
-  @Prop({ default: false })
-  dark_mode: boolean;
+  @Prop()
+  dark_mode: string;
 
   @Prop({ type: [Number], default: [] })
   enrolled_vkms: number[];

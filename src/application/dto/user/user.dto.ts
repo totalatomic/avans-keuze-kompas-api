@@ -12,10 +12,11 @@ export class UserDto {
   aiReccomendedVKMs: number[];
   Token?: string;
   fontsize: number;
-  darkmode: boolean;
+  darkmode: string;
   language: string;
+  notifications: boolean;
   constructor(data?: Partial<UserSchemaDto>) {
-    this.fullName = data?.first_name ?? "";
+    this.fullName = `${data?.first_name} ${data?.prefix} ${data?.last_name}`;
     this.email = data?.email ?? "";
     this.studentnumber = data?.student_number ?? "";
     this.isStudent = data?.isStudent ?? false;
@@ -23,7 +24,8 @@ export class UserDto {
     this.enrolledVKMs = data?.enrolled_vkms ?? [];
     this.aiReccomendedVKMs = data?.ai_reccomended_vkms ?? [];
     this.fontsize = data?.text_size ?? 100;
-    this.darkmode = data?.dark_mode ?? true;
-    this.language = data?.language ?? "nederlands";
+    this.darkmode = data?.dark_mode ?? 'system';
+    this.language = data?.language ?? "nl_NL";
+    this.notifications = data?.notifications ?? false;
   }
 }

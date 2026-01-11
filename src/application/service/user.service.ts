@@ -1,9 +1,12 @@
-import { LoginUserDto, LoginUserResDto } from "../dto/user";
+import { LoginUserDto } from "../dto/user/login-user.dto";
+import { LoginUserResDto } from "../dto/user/login-user-res.dto";
 import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user.repository.mongodb";
 import { UserDto } from "../dto/user/user.dto";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "../../infrastructure/auth/auth.service";
+import { RecommendationDto } from "../dto/ai/recommendation.dto";
 import { User } from '../../domain/entities/user.entity';
+import { QuestionnaireAnswers } from "../../domain/common/questionairAnswers.dto";
 import { UserSchemaDto } from '../dto/user/user.schema.dto';
 import { AddFavoriteDto } from "../dto/user/add-favorites.dto";
 import { VkmRepositoryMongoDB } from "../../infrastructure/repositories/vkm.repository.mongodb";
@@ -42,6 +45,15 @@ export class userService {
     //get the user id from the token
     //fetch user data from the repository
     //return user dto
+  }
+  async getRecommendations(userId: string): Promise<any> {
+    return await this.userRepository.getAiReccomendedVKMs(userId);
+  }
+  async findById(userId: number): Promise<any> {
+    return await this.userRepository.findById(userId);
+  }
+  async setRecommendations(userId: string, RecommendationDto: RecommendationDto) {
+    await this.userRepository.setRecommendations(userId, RecommendationDto);
   }
   buildUserDto(resUser: UserSchemaDto, token: string): UserDto {
     let newUserDto = new UserDto(
