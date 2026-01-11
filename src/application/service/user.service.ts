@@ -1,10 +1,11 @@
-import { LoginUserDto, LoginUserResDto } from "../dto/user";
+import { LoginUserDto, LoginUserResDto, TokenUserDto } from "../dto/user";
 import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user.repository.mongodb";
 import { UserDto } from "../dto/user/user.dto";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "../../infrastructure/auth/auth.service";
 import { User } from '../../domain/entities/user.entity';
 import { UserSchemaDto } from '../dto/user/user.schema.dto';
+import request from 'supertest';
 
 @Injectable()
 export class userService {
@@ -34,10 +35,12 @@ export class userService {
     //end the user session or invalidate the token
     //return a positive response
   }
-  async getUser(): Promise<void> {
+  async getUser(request: TokenUserDto): Promise<void> {
     //get the user id from the token
+    let user = await this.authService.GetCurrentUserInfo(request.token);
     //fetch user data from the repository
     //return user dto
+    //return this.buildUserDto(user, request.token);
   }
   buildUserDto(resUser: UserSchemaDto, token: string): UserDto {
     let newUserDto = new UserDto(

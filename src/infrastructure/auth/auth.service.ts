@@ -18,8 +18,11 @@ export class AuthService implements IAuthInterface {
     // Implementation here
     return null;
   }
-  async GetCurrentUserInfo(token: string | undefined): Promise<void> {
+  async GetCurrentUserInfo(token: string): Promise<object> {
     // Implementation here
+    // const res: JwtPayload = this.jwtService.decode(token)
+    // console.log(res)
+    return {};
   }
   async GetCurrentToken(): Promise<string | null> {
     // Implementation here
