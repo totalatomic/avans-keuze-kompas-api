@@ -7,8 +7,11 @@ import { AuthService } from "src/infrastructure/auth/auth.service";
 import { Userschema } from "src/application/dto/user/user.schema.dto";
 import { AuthModule } from '../../../infrastructure/auth/auth.module';
 
+
 @Module({
-  imports: [AuthModule, MongooseModule.forFeature([{ name: 'User', schema: Userschema }])],
+  imports: [
+    AuthModule,
+    MongooseModule.forFeature([{ name: 'User', schema: Userschema }])],
   controllers: [userController],
   providers: [
     userService,

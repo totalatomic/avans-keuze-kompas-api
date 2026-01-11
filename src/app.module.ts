@@ -13,7 +13,8 @@ import { userService } from "./application/service/user.service";
 import { MsgController } from "./api/controllers/msg/msg.controller";
 import { MsgService } from "./application/service/msg.service";
 import { MsgModule } from "./api/controllers/msg/msg.module";
-
+import { APP_GUARD } from "@nestjs/core";
+import { Authguard } from "src/infrastructure/auth/auth.guard";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,7 +36,11 @@ import { MsgModule } from "./api/controllers/msg/msg.module";
   providers: [
     VkmService,
     userService,
-    MsgService
+    MsgService,
+    {
+      provide: APP_GUARD,
+      useClass: Authguard,
+    },
   ]
 })
 export class AppModule { }

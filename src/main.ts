@@ -7,6 +7,14 @@ import { EnvConfigModel } from './infrastructure/env';
 
 function setUpSwagger(app: INestApplication): void {
   const config = new DocumentBuilder()
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'access-token'
+    )
     .setTitle('Avans Keuze Kompas API')
     .setDescription('The Avans Keuze Kompas API description')
     .setVersion('1.0')

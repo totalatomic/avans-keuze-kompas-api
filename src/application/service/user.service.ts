@@ -1,5 +1,4 @@
-import { LoginUserDto } from "../dto/user/login-user.dto";
-import { LoginUserResDto } from "../dto/user/login-user-res.dto";
+import { LoginUserDto, LoginUserResDto, TokenUserDto } from "../dto/user";
 import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user.repository.mongodb";
 import { UserDto } from "../dto/user/user.dto";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
@@ -17,17 +16,17 @@ export class userService {
     @Inject('IAuthInterface')
     private readonly authService: AuthService
   ) { }
-  async login(request: LoginUserDto): Promise<UserDto | UnauthorizedException> {
+  async login(request: LoginUserDto): Promise<UserDto> {
     //take the login dto and see if the user exists
     let user = await this.userRepository.findByEmail(request.email);
     //if not return not found
     if (!user) {
-      return new UnauthorizedException('invalid credentials, check your email and password then try again');
+      throw new UnauthorizedException('invalid credentials, check your email and password then try again');
     }
     //if yes compare hashed passwords via the auth service
     let match = await this.authService.ValidatePassword(request.password, user.password);
     if (!match) {
-      return new UnauthorizedException('invalid credentials, check your email and password then try again');
+      throw new UnauthorizedException('invalid credentials, check your email and password then try again');
     }
     //if they match return user dto + token
     let token = await this.authService.GenerateToken(user);
@@ -37,10 +36,14 @@ export class userService {
     //end the user session or invalidate the token
     //return a positive response
   }
-  async getUser(): Promise<void> {
-    //get the user id from the token
+  async getUser(user_id: string): Promise<UserDto> {
+    let user = await this.userRepository.findById(user_id)
     //fetch user data from the repository
     //return user dto
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    return this.buildUserDto(user, '');
   }
   async getRecommendations(userId: string): Promise<any> {
     return await this.userRepository.getAiReccomendedVKMs(userId);
