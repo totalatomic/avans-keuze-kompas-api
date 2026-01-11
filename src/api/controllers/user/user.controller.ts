@@ -14,7 +14,8 @@ export class userController {
     return this.UserService.login(user);
   }
   @Get("recommendations")
-  async getRecommendations(@Body() userId: number){
+  async getRecommendations() {
+    let userId = '695e70c4af5eb7b5312242e7';
     return this.UserService.getRecommendations(userId);
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { userService } from '../service/user.service';
+import { userService } from './user.service';
 import { AiClientService } from '../../infrastructure/ai/aiClient.service';
 import { NotFoundException } from '@nestjs/common';
 import { QuestionnaireAnswers } from '../../domain/common/questionairAnswers.dto.js';
-import { RecommendationDto } from './dto/recommendation.dto';
+import { RecommendationDto } from '../dto/ai/recommendation.dto';
 import { IQuestionnaire } from '../../domain/interfaces/ai/questionaire.interface.js';
 
 
@@ -12,7 +12,7 @@ export class RecommendationsService {
   constructor(
     private readonly aiClient: AiClientService,
     private readonly userService: userService,
-  ) {}
+  ) { }
 
   async requestRecommendation(
     userId: string,

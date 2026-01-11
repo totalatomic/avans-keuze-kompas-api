@@ -1,11 +1,12 @@
-import { LoginUserDto, LoginUserResDto } from "../dto/user";
+import { LoginUserDto } from "../dto/user/login-user.dto";
+import { LoginUserResDto } from "../dto/user/login-user-res.dto";
 import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user.repository.mongodb";
 import { UserDto } from "../dto/user/user.dto";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "../../infrastructure/auth/auth.service";
-import { RecommendationDto } from "../ai/dto/recommendation.dto";
+import { RecommendationDto } from "../dto/ai/recommendation.dto";
 import { User } from '../../domain/entities/user.entity';
-import { QuestionnaireAnswers } from "../../domain/common/questionairAnswers.dto"; 
+import { QuestionnaireAnswers } from "../../domain/common/questionairAnswers.dto";
 import { UserSchemaDto } from '../dto/user/user.schema.dto';
 
 @Injectable()
@@ -41,7 +42,7 @@ export class userService {
     //fetch user data from the repository
     //return user dto
   }
-  async getRecommendations(userId: number): Promise<any> {
+  async getRecommendations(userId: string): Promise<any> {
     return await this.userRepository.getAiReccomendedVKMs(userId);
   }
   async findById(userId: number): Promise<any> {

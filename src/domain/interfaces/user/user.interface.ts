@@ -6,5 +6,5 @@ export interface IUserRepository extends IBaseRepository<User> {
   logout(): void
   getFavoriteVKMs(userId: string): Promise<User | null>
   getEnrolledVKMs(userId: string): Promise<User | null>
-  getAiReccomendedVKMs(userId: number): Promise<User | null>
+  getAiReccomendedVKMs(userId: string): Promise<User | null>
 }
