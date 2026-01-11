@@ -42,9 +42,20 @@ export class UserRepositoryMongoDB implements IUserRepository {
     // Implementation for fetching user's enrolled VKMs
     return null;
   }
-  async getAiReccomendedVKMs(userId: string): Promise<User | null> {
+  async getAiReccomendedVKMs(userId: string): Promise<any | null> {
     // Implementation for fetching AI recommended VKMs for the user
     return null;
   }
+  async setRecommendations(userId: string, recommendations: number[]): Promise<void> {
+    const updated = await this.userModel.findByIdAndUpdate(
+      new Types.ObjectId(userId),
+      { $set: { ai_reccomended_vkms: recommendations } },
+      { new: true },
+    );
 
+
+    if (updated === null) {
+      throw new NotFoundException('User not found');
+    }
+  }
 }

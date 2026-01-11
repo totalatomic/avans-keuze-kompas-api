@@ -7,7 +7,9 @@ import { VkmModule } from "./api/controllers/vkm/vkm.module";
 import { ConfigModule } from "@nestjs/config";
 import { envConfiguration } from './infrastructure/env';
 import { userController, UserModule } from "./api/controllers/user";
+import { RecommendationModule } from "./api/controllers/ai/recommendation.module";
 import { userService } from "./application/service/user.service";
+
 import { MsgController } from "./api/controllers/msg/msg.controller";
 import { MsgService } from "./application/service/msg.service";
 import { MsgModule } from "./api/controllers/msg/msg.module";
@@ -27,6 +29,7 @@ import { Authguard } from "src/infrastructure/auth/auth.guard";
     }),
     VkmModule,
     UserModule,
+    RecommendationModule,
     MsgModule
   ],
   controllers: [VkmController, userController, MsgController],
