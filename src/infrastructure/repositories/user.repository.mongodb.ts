@@ -34,16 +34,9 @@ export class UserRepositoryMongoDB implements IUserRepository {
     // Implementation for fetching all Users from MongoDB
     return [];
   }
-  async getFavoriteVKMs(userId: string): Promise<User | null> {
-    // Implementation for fetching user's favorite VKMs
-    return null;
-  }
+
   async getEnrolledVKMs(userId: string): Promise<User | null> {
     // Implementation for fetching user's enrolled VKMs
-    return null;
-  }
-  async getAiReccomendedVKMs(userId: string): Promise<any | null> {
-    // Implementation for fetching AI recommended VKMs for the user
     return null;
   }
   async setRecommendations(userId: string, recommendations: number[]): Promise<void> {
@@ -53,6 +46,17 @@ export class UserRepositoryMongoDB implements IUserRepository {
       { new: true },
     );
 
+
+    if (updated === null) {
+      throw new NotFoundException('User not found');
+    }
+  }
+  async addFavoriteVKM(userId: string, favorites: number[]): Promise<void> {
+    const updated = await this.userModel.findByIdAndUpdate(
+      new Types.ObjectId(userId),
+      { $set: { favorite_vkms: favorites } },
+      { new: true },
+    );
 
     if (updated === null) {
       throw new NotFoundException('User not found');

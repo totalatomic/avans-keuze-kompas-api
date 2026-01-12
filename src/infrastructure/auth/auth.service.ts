@@ -7,12 +7,17 @@ import { ConfigService } from "@nestjs/config";
 import { EnvConfigModel } from '../env'
 import { UserSchemaDocument } from "src/application/dto/user";
 
+type PayloadType = {
+  email: string;
+  id: string;
+}
 @Injectable()
 export class AuthService implements IAuthInterface {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService<EnvConfigModel>,
   ) { }
+  
 
   async GetCurrentUser(): Promise<User | null> {
     // Implementation here

@@ -7,12 +7,16 @@ import { RecommendationDto } from "../dto/ai/recommendation.dto";
 import { User } from '../../domain/entities/user.entity';
 import { QuestionnaireAnswers } from "../../domain/common/questionairAnswers.dto";
 import { UserSchemaDto } from '../dto/user/user.schema.dto';
+import { VkmRepositoryMongoDB } from "../../infrastructure/repositories/vkm.repository.mongodb";
+import { FavoritesDto } from "../dto/favorites/favorites.dto";
 
 @Injectable()
 export class userService {
   constructor(
     @Inject('IUserRepository')
     private readonly userRepository: UserRepositoryMongoDB,
+    @Inject('IvkmRepository')
+    private readonly vkmRepository: VkmRepositoryMongoDB,
     @Inject('IAuthInterface')
     private readonly authService: AuthService
   ) { }
@@ -45,9 +49,6 @@ export class userService {
     }
     return this.buildUserDto(user, '');
   }
-  async getRecommendations(userId: string): Promise<any> {
-    return await this.userRepository.getAiReccomendedVKMs(userId);
-  }
   async findById(userId: string): Promise<any> {
     return await this.userRepository.findById(userId);
   }
@@ -60,5 +61,8 @@ export class userService {
     );
     newUserDto.Token = token;
     return newUserDto
+  }
+  async addFavorite(userId: string, favoritesDto: FavoritesDto): Promise<void> {
+    await this.userRepository.addFavoriteVKM(userId, favoritesDto);
   }
 }

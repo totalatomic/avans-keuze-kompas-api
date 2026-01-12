@@ -1,0 +1,1 @@
+export type FavoritesDto = number[];
