@@ -12,7 +12,6 @@ export class FavoriteController {
 
   @Post('favoriteAdd')
   async addFavorite(@Body() favoritesDto: FavoritesDto, @Req() req): Promise<void> {
-    let userId = '695e70c4af5eb7b5312242e7';
-    await this.userService.addFavorite(userId, favoritesDto);
+    await this.userService.addFavorite(req.user.userInfo.id, favoritesDto);
   }
 }

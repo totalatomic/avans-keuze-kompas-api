@@ -49,9 +49,6 @@ export class userService {
     }
     return this.buildUserDto(user, '');
   }
-  async getRecommendations(userId: string): Promise<any> {
-    return await this.userRepository.getAiReccomendedVKMs(userId);
-  }
   async findById(userId: string): Promise<any> {
     return await this.userRepository.findById(userId);
   }
@@ -67,8 +64,5 @@ export class userService {
   }
   async addFavorite(userId: string, favoritesDto: FavoritesDto): Promise<void> {
     await this.userRepository.addFavoriteVKM(userId, favoritesDto);
-  }
-  async getFavorites(userId: string): Promise<any> {
-    return await this.userRepository.getFavoriteVKMs(userId);
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, NotFoundException, Req } from '@nestjs/common';
 import { RecommendationsService } from 'src/application/service/recommendation.service';
 import type { RecommendationDto } from '../../../application/dto/ai/recommendation.dto';
 import { QuestionnaireDto } from './dto/questionair.dto';
@@ -12,11 +12,11 @@ export class RecommendationController {
   ) { }
 
   @Post()
-  async generate(@Body() body: QuestionnaireDto): Promise<RecommendationDto> {
-    const { userId, ...answers } = body;
+  async generate(@Body() body: QuestionnaireDto, @Req() req): Promise<RecommendationDto> {
+    const { ...answers } = body;
 
     return this.recommendations.requestRecommendation(
-      userId,
+      req.user.userInfo.id,
       answers,
     );
   }
