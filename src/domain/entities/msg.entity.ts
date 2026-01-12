@@ -7,4 +7,5 @@ export class MSG extends BaseEntity {
   messageText: string;
   sentAt: Date;
   isRead: boolean;
+  
 }

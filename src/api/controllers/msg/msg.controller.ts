@@ -12,6 +12,7 @@ export class MsgController {
   constructor(private readonly msgService: MsgService) { }
 
 
+
   @Get(':id')
   @ApiOperation({ summary: 'Get MSG by Receiver ID' })
   @ApiParam({ name: 'id', required: true, description: 'Receiver ID of the MSG' })
@@ -33,12 +34,11 @@ export class MsgController {
   @ApiParam({ name: 'receiverId', required: true, description: 'Receiver ID to send the MSG to' })
   async sendMsgToReceiver(@Param('receiverId') receiverId: string, @Body() msgData: CreateMsgDto) {
     const newMsg = new MSG();
-    newMsg._id = new UUID().toString();
     newMsg.senderName = msgData.senderName;
     newMsg.receiverId = receiverId;
     newMsg.title = msgData.title;
     newMsg.messageText = msgData.messageText;
-    newMsg.sentAt = new Date();
+    newMsg.sentAt = msgData.sentAt;
     newMsg.isRead = false;
 
     return this.msgService.create(newMsg);
