@@ -18,8 +18,14 @@ import { VkmModule } from "../vkm/vkm.module";
   providers: [
     userService,
     UserRepositoryMongoDB,
-    { provide: 'IUserRepository', useClass: UserRepositoryMongoDB },
-    { provide: 'IAuthInterface', useExisting: AuthService }
+    { 
+      provide: 'IUserRepository', 
+      useClass: UserRepositoryMongoDB 
+    },
+    { 
+      provide: 'IAuthInterface', 
+      useExisting: AuthService 
+    }
   ],
   exports: ['IUserRepository', userService, 'IAuthInterface']
 })

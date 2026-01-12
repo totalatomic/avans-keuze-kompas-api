@@ -1,7 +1,7 @@
 import { IAuthInterface } from "../../domain/interfaces";
 import { User } from "../../domain/entities";
 import bcrypt from "node_modules/bcryptjs";
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { EnvConfigModel } from '../env'
@@ -23,12 +23,11 @@ export class AuthService implements IAuthInterface {
     // Implementation here
     return null;
   }
-  async GetCurrentUserInfo(token: string | undefined): Promise<string | undefined> {
-    if (!token) {
-      return;
-    }
-    const decodedJwt = this.jwtService.decode(token.split(' ')[1]) as PayloadType;
-    return decodedJwt.id
+  async GetCurrentUserInfo(): Promise<object> {
+    // Implementation here
+    // const res: JwtPayload = this.jwtService.decode(token)
+    // console.log(res)
+    return {};
   }
   async GetCurrentToken(): Promise<string | null> {
     // Implementation here
@@ -36,7 +35,7 @@ export class AuthService implements IAuthInterface {
   }
   async GenerateToken(user: UserSchemaDocument): Promise<string> {
     const accesstoken = await this.jwtService.signAsync({
-      user: {
+      userInfo: {
         id: user._id,
         email: user.email,
         username: `${user.first_name} ${user.prefix} ${user.last_name}`,
