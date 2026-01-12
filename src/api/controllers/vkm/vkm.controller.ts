@@ -7,7 +7,6 @@ import { Public } from "src/domain/common/decorators/public.decorator";
 @ApiTags('VKM')
 export class VkmController {
   constructor(private readonly vkmService: VkmService) { }
-  @Public()
   @Get('')
   @ApiOperation({ summary: 'Get all VKM records' })
   @ApiParam({ name: 'None', required: false, description: 'No parameters needed' })

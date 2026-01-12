@@ -59,7 +59,7 @@ export class userService {
     let newUserDto = new UserDto(
       resUser
     );
-    newUserDto.Token = token;
+    newUserDto.token = token;
     return newUserDto
   }
   async addFavorite(userId: string, favoritesDto: FavoritesDto): Promise<void> {

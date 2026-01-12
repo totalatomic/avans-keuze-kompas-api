@@ -1,4 +1,5 @@
 import { VKM } from "../../../domain/entities";
+import { ChosenModule } from "../vkm/chosen.vkm";
 import { UserSchemaDto } from "./user.schema.dto";
 
 export class UserDto {
@@ -8,24 +9,29 @@ export class UserDto {
   studentnumber: string;
   isStudent: boolean;
   favoriteVKMs: number[];
-  enrolledVKMs: number[];
-  aiReccomendedVKMs: number[];
-  Token?: string;
+  chosenVKMs: ChosenModule[];
+  aiRecommendedVKMs: number[];
+  token?: string;
   fontsize: number;
   darkmode: string;
   language: string;
   notifications: boolean;
+  course: string;
+  slber: string;
+
   constructor(data?: Partial<UserSchemaDto>) {
     this.fullName = `${data?.first_name} ${data?.prefix} ${data?.last_name}`;
     this.email = data?.email ?? "";
     this.studentnumber = data?.student_number ?? "";
     this.isStudent = data?.isStudent ?? false;
     this.favoriteVKMs = data?.favorite_vkms ?? [];
-    this.enrolledVKMs = data?.enrolled_vkms ?? [];
-    this.aiReccomendedVKMs = data?.ai_reccomended_vkms ?? [];
+    this.chosenVKMs = data?.chosen_vkms ?? [];
+    this.aiRecommendedVKMs = data?.ai_recommended_vkms ?? [];
     this.fontsize = data?.text_size ?? 100;
     this.darkmode = data?.dark_mode ?? 'system';
     this.language = data?.language ?? "nl_NL";
     this.notifications = data?.notifications ?? false;
+    this.course = data?.course ?? "n/a";
+    this.slber = data?.slber ?? "n/a";
   }
 }
