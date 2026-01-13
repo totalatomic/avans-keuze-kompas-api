@@ -71,4 +71,21 @@ export class UserRepositoryMongoDB implements IUserRepository {
       { _id: stringToObjectId(userId) },
       { $push: { chosen_vkms: choice } })
   }
+  async updateChoices(userId: string, choices: ChosenModuleDto[]): Promise<void> {
+    await this.userModel.updateOne(
+      { _id: stringToObjectId(userId) },
+      { $set: { chosen_vkms: choices } })
+  }
+  async updateSettings(userId: string, settings: any): Promise<void> {
+    await this.userModel.updateOne(
+      { _id: stringToObjectId(userId) },
+      {
+        $set: {
+          text_size: settings.fontsize,
+          dark_mode: settings.darkmode,
+          language: settings.language,
+          notifications: settings.notifications
+        }
+      });
+  }
 }

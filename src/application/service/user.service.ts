@@ -1,10 +1,8 @@
-import { LoginUserDto, LoginUserResDto, TokenUserDto } from "../dto/user";
+import { LoginUserDto, UserDto, userSettingsDto } from "../dto/user";
 import { UserRepositoryMongoDB } from "../../infrastructure/repositories/user.repository.mongodb";
-import { UserDto } from "../dto/user/user.dto";
 import { BadRequestException, Inject, Injectable, UnauthorizedException, Delete } from '@nestjs/common';
 import { AuthService } from "../../infrastructure/auth/auth.service";
 import { RecommendationDto } from "../dto/ai/recommendation.dto";
-import { User } from '../../domain/entities/user.entity';
 import { QuestionnaireAnswers } from "../../domain/common/questionairAnswers.dto";
 import { UserSchemaDto } from '../dto/user/user.schema.dto';
 import { VkmRepositoryMongoDB } from "../../infrastructure/repositories/vkm.repository.mongodb";
@@ -22,7 +20,7 @@ export class userService {
   ) { }
   async login(request: LoginUserDto): Promise<UserDto> {
     //take the login dto and see if the user exists
-    let user = await this.userRepository.findByEmail(request.email);
+    let user = await this.userRepository.findByEmail(request.email.toLowerCase());
     //if not return not found
     if (!user) {
       throw new UnauthorizedException('invalid credentials, check your email and password then try again');
@@ -75,5 +73,28 @@ export class userService {
     }
     let chosenVkm = new ChosenModuleDto(chosenVkmId, (curUser.chosenVKMs.length + 1));    //build the chosenDTO
     await this.userRepository.addChoice(userId, chosenVkm);
+  }
+  async updateChoices(userId: string, choices: ChosenModuleDto[]): Promise<void> {
+    let curUser = await this.getUser(userId); //will throw error on incorrect userid
+    await this.userRepository.updateChoices(userId, choices);
+  }
+  async updateSettings(userId: string, settings: userSettingsDto): Promise<void> {
+    //implementation pending
+    let currUser = await this.findById(userId); //will throw error on incorrect userid
+    //check which settings are present and update accordingly
+    if (!settings.fontsize) {
+      settings.fontsize = currUser.text_size;
+    }
+    if (!settings.darkmode) {
+      settings.darkmode = currUser.dark_mode;
+    }
+    if (!settings.language) {
+      settings.language = currUser.language;
+    }
+    if (settings.notifications === undefined) {
+      settings.notifications = currUser.notifications;
+    }
+    await this.userRepository.updateSettings(userId, settings);
+    return;
   }
 }

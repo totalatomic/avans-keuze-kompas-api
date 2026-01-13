@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Post, Request, Param, UseGuards } from "@nestjs/common";
-import { LoginUserDto } from '../../../application/dto/user/login-user.dto';
-import { UserDto } from "src/application/dto/user/user.dto";
+import { Body, Controller, Get, Post, Request, Param, UseGuards, Patch } from "@nestjs/common";
+import { UserDto, LoginUserDto, userSettingsDto } from "src/application/dto/user";
 import { userService } from '../../../application/service/user.service';
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { Public } from "src/domain/common/decorators/public.decorator";
 import { ApiParam, } from "@nestjs/swagger";
+import { ChosenModuleDto } from "src/application/dto/vkm/chosen.vkm";
 
 @ApiTags('User')
 @Controller('user')
@@ -34,6 +34,15 @@ export class userController {
   @ApiParam({ name: 'vkmId', required: true, description: 'VKM ID' })
   async addChoice(@Param('vkmId') vkmId: number, @Request() req) {
     return await this.UserService.addChoice(req.user.userInfo.id, vkmId);
+  }
+  @Post('updateChoice')
+  async updateChoice(@Body() choices: ChosenModuleDto[], @Request() req) {
+    return await this.UserService.updateChoices(req.user.userInfo.id, choices);
+  }
+  @Patch('updateSettings')
+  async updateSettings(@Body() settings: userSettingsDto, @Request() req) {
+    //implementation pending
+    return await this.UserService.updateSettings(req.user.userInfo.id, settings);
   }
 
 }
