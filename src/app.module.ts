@@ -15,6 +15,7 @@ import { MsgService } from "./application/service/msg.service";
 import { MsgModule } from "./api/controllers/msg/msg.module";
 import { APP_GUARD } from "@nestjs/core";
 import { Authguard } from "src/infrastructure/auth/auth.guard";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
   imports: [
@@ -27,6 +28,12 @@ import { Authguard } from "src/infrastructure/auth/auth.guard";
       useFactory: () => ({
         uri: envConfiguration().database.url
       })
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [{
+        ttl: 1000 * 60, //thirty request per one minute
+        limit: 30,
+      }]
     }),
     VkmModule,
     UserModule,
@@ -42,6 +49,10 @@ import { Authguard } from "src/infrastructure/auth/auth.guard";
       provide: APP_GUARD,
       useClass: Authguard,
     },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    }
   ]
 })
 export class AppModule { }
