@@ -15,7 +15,6 @@ import { MsgService } from "./application/service/msg.service";
 import { MsgModule } from "./api/controllers/msg/msg.module";
 import { APP_GUARD } from "@nestjs/core";
 import { Authguard } from "src/infrastructure/auth/auth.guard";
-import { FavoriteModule } from "./api/controllers/favorite/favorites.module";
 
 @Module({
   imports: [
@@ -33,7 +32,6 @@ import { FavoriteModule } from "./api/controllers/favorite/favorites.module";
     UserModule,
     RecommendationModule,
     MsgModule,
-    FavoriteModule,
   ],
   controllers: [VkmController, userController, MsgController],
   providers: [

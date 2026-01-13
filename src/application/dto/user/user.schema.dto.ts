@@ -1,7 +1,7 @@
 import { Schema, SchemaFactory, Prop } from "@nestjs/mongoose";
 import { HydratedDocument, Types } from "mongoose";
 import { User } from "src/domain/entities";
-import { ChosenModule } from "../vkm/chosen.vkm";
+import { ChosenModuleDto } from "../vkm/chosen.vkm";
 
 @Schema({ timestamps: true })
 export class UserSchemaDto {
@@ -22,8 +22,8 @@ export class UserSchemaDto {
   @Prop()
   dark_mode: string;
 
-  @Prop({ type: [ChosenModule], default: [] })
-  chosen_vkms: ChosenModule[];
+  @Prop({ type: [ChosenModuleDto], default: [] })
+  chosen_vkms: ChosenModuleDto[];
 
   @Prop({ type: [Number], default: [] })
   favorite_vkms: number[];

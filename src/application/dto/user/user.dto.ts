@@ -1,5 +1,5 @@
 import { VKM } from "../../../domain/entities";
-import { ChosenModule } from "../vkm/chosen.vkm";
+import { ChosenModuleDto } from "../vkm/chosen.vkm";
 import { UserSchemaDto } from "./user.schema.dto";
 
 export class UserDto {
@@ -9,7 +9,7 @@ export class UserDto {
   studentnumber: string;
   isStudent: boolean;
   favoriteVKMs: number[];
-  chosenVKMs: ChosenModule[];
+  chosenVKMs: ChosenModuleDto[];
   aiRecommendedVKMs: number[];
   token?: string;
   fontsize: number;

@@ -5,16 +5,20 @@ import { Model, ObjectId, Types } from 'mongoose';
 import { UserSchemaDocument } from 'src/application/dto/user/user.schema.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { stringToObjectId } from '../utils/string_to_Objectid';
+import { ChosenModuleDto } from 'src/application/dto/vkm/chosen.vkm';
 @Injectable()
 export class UserRepositoryMongoDB implements IUserRepository {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserSchemaDocument>
   ) { }
-  async findById(id: string): Promise<UserSchemaDocument | null> {
+  async findById(id: string): Promise<UserSchemaDocument> {
     // Implementation for fetching a User by ID from MongoDB
     const o_id = stringToObjectId(id);
     let retuser = await this.userModel.findOne({ _id: o_id }).exec()
+    if (!retuser) {
+      throw new NotFoundException('User not found');
+    }
     return retuser;
   }
   async findByEmail(email: string): Promise<UserSchemaDocument | null> {
@@ -51,15 +55,20 @@ export class UserRepositoryMongoDB implements IUserRepository {
       throw new NotFoundException('User not found');
     }
   }
-  async addFavoriteVKM(userId: string, favorites: number[]): Promise<void> {
-    const updated = await this.userModel.findByIdAndUpdate(
-      new Types.ObjectId(userId),
-      { $set: { favorite_vkms: favorites } },
-      { new: true },
-    );
-
-    if (updated === null) {
-      throw new NotFoundException('User not found');
-    }
+  async addFavoriteVKM(userId: string, favoriteId: number): Promise<void> {
+    await this.userModel.updateOne(
+      { _id: stringToObjectId(userId) },
+      { $push: { favorite_vkms: favoriteId } })
+  }
+  async DeleteFavoriteVKM(userId: string, favoriteId: number): Promise<void> {
+    console.log(`Removing favorite VKM ${favoriteId} for user ${userId}`);
+    await this.userModel.updateOne(
+      { _id: stringToObjectId(userId) },
+      { $pull: { favorite_vkms: favoriteId } })
+  }
+  async addChoice(userId: string, choice: ChosenModuleDto): Promise<void> {
+    await this.userModel.updateOne(
+      { _id: stringToObjectId(userId) },
+      { $push: { chosen_vkms: choice } })
   }
 }
