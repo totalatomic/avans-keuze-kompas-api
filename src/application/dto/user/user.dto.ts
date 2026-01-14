@@ -18,6 +18,7 @@ export class UserDto {
   notifications: boolean;
   course: string;
   slber: string;
+  dob: Date;
 
   constructor(data?: Partial<UserSchemaDto>) {
     this.fullName = `${data?.first_name} ${data?.prefix} ${data?.last_name}`;
@@ -33,5 +34,6 @@ export class UserDto {
     this.notifications = data?.notifications ?? false;
     this.course = data?.course ?? "n/a";
     this.slber = data?.slber ?? "n/a";
+    this.dob = data?.dob ?? new Date();
   }
 }

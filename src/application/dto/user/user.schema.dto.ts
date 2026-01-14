@@ -56,6 +56,8 @@ export class UserSchemaDto {
   course: string;
   @Prop()
   slber: string;
+  @Prop()
+  dob: Date;
 }
 export type UserSchemaDocument = HydratedDocument<UserSchemaDto>;
 
