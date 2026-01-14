@@ -1,10 +1,11 @@
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, Document, Mongoose} from "mongoose";
-import { ObjectId } from "mongodb";
+import { Model} from "mongoose";
+
 import { IMsgRepository } from "../../../domain/interfaces/";
 import { MSG } from "../../../domain/entities";
 import { MsgSchemaDocument } from "src/application/msg";
 import { Injectable } from "@nestjs/common";
+
 
 @Injectable()
 export class MsgRepositoryMongoDB implements IMsgRepository {
@@ -21,18 +22,18 @@ export class MsgRepositoryMongoDB implements IMsgRepository {
   async findById(id: number): Promise<MSG | null> {
     return null;
   }
-  async create(item: MSG): Promise<MSG> {
-    this.MsgModel.insertOne(
-      {
-        senderName: item.senderName,
-        receiverId: item.receiverId,
-        title: item.title,
-        messageText: item.messageText,
-        sentAt: item.sentAt,
-        isRead: item.isRead
-      }
-    );
-    return item;
+  async create(msg: MSG): Promise<MSG> {
+
+    const newMsg = await this.MsgModel.create({
+        senderName: msg.senderName.toString(),
+        receiverId: msg.receiverId.toString(),
+        title: msg.title.toString(),
+        messageText: msg.messageText.toString(),
+        sentAt: msg.sentAt,
+        isRead: msg.isRead
+      });
+
+    return newMsg;
   }
   async findAll(): Promise<MSG[]> {
     return [new MSG()];
@@ -43,21 +44,47 @@ export class MsgRepositoryMongoDB implements IMsgRepository {
     nextMinute.setSeconds(0, 0);
     nextMinute.setMinutes(nextMinute.getMinutes() + 1);
 
+    await this.MsgModel.updateMany(
+        {receiverId: receiverId},
+        {$set: { isRead: true }
+      }).exec();
+
     const returntype = await this.MsgModel.find({
-       _id: receiverId.toString(), 
-       date: {
+       receiverId: receiverId, 
+       sentAt: {
           $lt: nextMinute
        }
     }).exec();
 
-    await this.MsgModel.updateMany({_id: receiverId},{$set: {isRead: true}}).exec()
+    if (!returntype || returntype.length === 0) {
+      throw new Error ("No messages found");
+      return [];
+    }
     return returntype
   }
   async findBySenderName(senderName: string): Promise<MSG[] | null> {
     return null;
   }
   async findUnreadByReceiverId(receiverId: string): Promise<MSG[] | null> {
-    return null;
+
+    const nextMinute = new Date();
+    nextMinute.setSeconds(0, 0);
+    nextMinute.setMinutes(nextMinute.getMinutes() + 1);
+
+    const returntype = await this.MsgModel.find({
+       receiverId: receiverId, 
+       sentAt: {
+          $lt: nextMinute
+       },
+       isRead: false
+    }).exec();  
+
+    if (!returntype || returntype.length === 0) {
+      throw new Error ("No messages found");
+    }
+
+    return returntype;  
+    
   }
 
 }
