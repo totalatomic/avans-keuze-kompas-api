@@ -3,7 +3,6 @@ import { Request } from 'express'; // express.Request
 export function extractTokenfromRequest(request: Request): string | undefined {
   // 1️⃣ Try cookie first
   const cookie = request.headers.cookie; // "auth=token; other=value"
-  console.log(cookie);
   if (!cookie) {
     const [type, token] = request.headers['authorization']?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
