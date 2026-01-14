@@ -63,13 +63,17 @@ export class userService {
     }
     return await this.userRepository.addFavoriteVKM(userId, favVkmId);
   }
-  async addChoice(userId: string, chosenVkmId: number): Promise<void> {
+  async addChoice(userId: string, chosenVkmId: Number): Promise<void> {
     let curUser = await this.getUser(userId); //will throw error on incorrect userid
     if (curUser.chosenVKMs.find(c => c.id === chosenVkmId)) {
-      throw new BadRequestException()//already chosen
+      throw new BadRequestException('already chosen')//already chosen
     }
     if (curUser.chosenVKMs.length >= 3) {
-      throw new BadRequestException()//max reached
+      throw new BadRequestException('cannot excede three')//max reached
+    }
+    let vkm = await this.vkmRepository.findById(chosenVkmId);
+    if (!vkm) {
+      throw new BadRequestException('vkm id doesnt exist')//vkm doesnt exist
     }
     let chosenVkm = new ChosenModuleDto(chosenVkmId, (curUser.chosenVKMs.length + 1));    //build the chosenDTO
     await this.userRepository.addChoice(userId, chosenVkm);

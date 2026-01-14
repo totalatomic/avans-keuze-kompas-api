@@ -61,7 +61,6 @@ export class UserRepositoryMongoDB implements IUserRepository {
       { $push: { favorite_vkms: favoriteId } })
   }
   async DeleteFavoriteVKM(userId: string, favoriteId: number): Promise<void> {
-    console.log(`Removing favorite VKM ${favoriteId} for user ${userId}`);
     await this.userModel.updateOne(
       { _id: stringToObjectId(userId) },
       { $pull: { favorite_vkms: favoriteId } })

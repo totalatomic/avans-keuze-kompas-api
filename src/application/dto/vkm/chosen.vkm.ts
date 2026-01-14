@@ -1,10 +1,10 @@
 export class ChosenModuleDto {
-  constructor(vkmId: number, Priority?: number, Enrolled?: boolean) {
+  constructor(vkmId: Number, Priority?: number, Enrolled?: boolean) {
     this.priority = Priority ?? 0;
     this.enrolled = Enrolled ?? false;
-    this.id = vkmId;
+    this.id = vkmId ?? 0;
   }
   priority: number;
-  id: number;
+  id: Number;
   enrolled: boolean;
 }

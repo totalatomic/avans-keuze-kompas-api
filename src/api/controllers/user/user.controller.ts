@@ -32,7 +32,7 @@ export class userController {
   }
   @Post('addChoice/:vkmId')
   @ApiParam({ name: 'vkmId', required: true, description: 'VKM ID' })
-  async addChoice(@Param('vkmId') vkmId: number, @Request() req) {
+  async addChoice(@Param('vkmId') vkmId: Number, @Request() req) {
     return await this.UserService.addChoice(req.user.userInfo.id, vkmId);
   }
   @Post('updateChoice')
