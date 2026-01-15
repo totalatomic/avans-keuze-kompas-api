@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { MsgRepositoryMongoDB } from "src/infrastructure/repositories/msg.repository.mongodb";
+import { MsgRepositoryMongoDB } from "../../infrastructure/repositories/msg.repository.mongodb";
 import { MSG } from "src/domain/entities";
 
 @Injectable()
@@ -8,6 +8,7 @@ export class MsgService {
     @Inject('MSG_REPOSITORY')
     private readonly msgRepository: MsgRepositoryMongoDB,
   ) { }
+
 
   async findAll(): Promise<MSG[]> {
     return this.msgRepository.findAll();
@@ -22,7 +23,7 @@ export class MsgService {
     return this.msgRepository.delete(id);
   }
   async findByReceiverId(receiverId: string): Promise<MSG[] | null> {
-    return null;
+    return this.msgRepository.findByReceiverId(receiverId);
   }
   async findBySenderName(senderName: string): Promise<MSG[] | null> {
     return this.msgRepository.findBySenderName(senderName);
@@ -33,4 +34,7 @@ export class MsgService {
   async create(msg: MSG): Promise<MSG> {
     return this.msgRepository.create(msg);
   }
+
+
+
 }

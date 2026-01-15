@@ -40,7 +40,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService<EnvConfigModel>);
   const configServices = app.get(ConfigService);
-  setUpSwagger(app);
+  //setUpSwagger(app);
   setUpAppConfiguration(app, configServices);
 
   const port = configService.get('listeningPort');

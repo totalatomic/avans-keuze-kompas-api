@@ -1,4 +1,4 @@
-import { IsString, IsDefined } from "class-validator";
+import { IsString, IsDefined, isDefined, IsDate } from "class-validator";
 
 export class CreateMsgDto {
   @IsString()
@@ -12,4 +12,8 @@ export class CreateMsgDto {
   @IsString()
   @IsDefined()
   messageText: string;
+
+  @IsDate()
+  @IsDefined()
+  sentAt: Date;
 }
