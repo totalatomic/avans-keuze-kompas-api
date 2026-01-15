@@ -78,11 +78,15 @@ export class userService {
     let chosenVkm = new ChosenModuleDto(chosenVkmId, (curUser.chosenVKMs.length + 1));    //build the chosenDTO
     await this.userRepository.addChoice(userId, chosenVkm);
   }
-  async updateChoices(userId: string, choices: ChosenModuleDto[]): Promise<void> {
+  async updateChoices(userId: string, choices: ChosenModuleDto[]): Promise<UserDto> {
     let curUser = await this.getUser(userId); //will throw error on incorrect userid
-    await this.userRepository.updateChoices(userId, choices);
+    let updatedUser = await this.userRepository.updateChoices(userId, choices);
+    if (!updatedUser) {
+      throw new BadRequestException('could not update choices');
+    }
+    return this.buildUserDto(updatedUser, '');
   }
-  async updateSettings(userId: string, settings: userSettingsDto): Promise<void> {
+  async updateSettings(userId: string, settings: userSettingsDto): Promise<UserDto> {
     //implementation pending
     let currUser = await this.findById(userId); //will throw error on incorrect userid
     //check which settings are present and update accordingly
@@ -98,7 +102,10 @@ export class userService {
     if (settings.notifications === undefined) {
       settings.notifications = currUser.notifications;
     }
-    await this.userRepository.updateSettings(userId, settings);
-    return;
+    let retuser = await this.userRepository.updateSettings(userId, settings);
+    if (!retuser) {
+      throw new BadRequestException('could not update settings');
+    };
+    return this.buildUserDto(retuser, '');
   }
 }

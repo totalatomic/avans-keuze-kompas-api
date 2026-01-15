@@ -46,7 +46,7 @@ export class UserRepositoryMongoDB implements IUserRepository {
   async setRecommendations(userId: string, recommendations: number[]): Promise<void> {
     const updated = await this.userModel.findByIdAndUpdate(
       new Types.ObjectId(userId),
-      { $set: { ai_reccomended_vkms: recommendations } },
+      { $set: { ai_recommended_vkms: recommendations } },
       { new: true },
     );
 
@@ -70,14 +70,16 @@ export class UserRepositoryMongoDB implements IUserRepository {
       { _id: stringToObjectId(userId) },
       { $push: { chosen_vkms: choice } })
   }
-  async updateChoices(userId: string, choices: ChosenModuleDto[]): Promise<void> {
-    await this.userModel.updateOne(
-      { _id: stringToObjectId(userId) },
-      { $set: { chosen_vkms: choices } })
+  async updateChoices(userId: string, choices: ChosenModuleDto[]): Promise<UserSchemaDocument | null> {
+    const cupdated = await this.userModel.findByIdAndUpdate(
+      stringToObjectId(userId),
+      { $set: { chosen_vkms: choices } },
+      { new: true });
+    return cupdated;
   }
-  async updateSettings(userId: string, settings: any): Promise<void> {
-    await this.userModel.updateOne(
-      { _id: stringToObjectId(userId) },
+  async updateSettings(userId: string, settings: any): Promise<UserSchemaDocument | null> {
+    const updated = await this.userModel.findByIdAndUpdate(
+      stringToObjectId(userId),
       {
         $set: {
           text_size: settings.fontsize,
@@ -85,6 +87,8 @@ export class UserRepositoryMongoDB implements IUserRepository {
           language: settings.language,
           notifications: settings.notifications
         }
-      });
+      },
+      { new: true });
+    return updated ?? null;
   }
 }

@@ -1,4 +1,4 @@
-import { QuestionnaireAnswers } from '../../../api/controllers/ai/dto/questionair.dto.js';
+import { QuestionnaireAnswers } from '../../../domain/common/questionairAnswers.dto.js';
 
 export interface IQuestionnaire {
   q1: QuestionnaireAnswers;

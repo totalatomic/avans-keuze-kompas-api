@@ -32,7 +32,7 @@ import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
     ThrottlerModule.forRoot({
       throttlers: [{
         ttl: 1000 * 60, //thirty request per one minute
-        limit: 30,
+        limit: 30 * 4,
       }]
     }),
     VkmModule,
