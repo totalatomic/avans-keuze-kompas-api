@@ -1,10 +1,7 @@
-import { QuestionnaireAnswers } from '../../../../domain/common/questionairAnswers.dto.js';
+import { QuestionnaireAnswers } from '../../../domain/common/questionairAnswers.dto.js';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class QuestionnaireDto {
-  @ApiProperty({ example: 123 })
-  userId: string;
-
   @ApiProperty({ type: QuestionnaireAnswers })
   q1: QuestionnaireAnswers;
 
