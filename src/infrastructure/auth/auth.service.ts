@@ -1,37 +1,44 @@
 import { IAuthInterface } from "../../domain/interfaces";
 import { User } from "../../domain/entities";
 import bcrypt from "node_modules/bcryptjs";
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { EnvConfigModel } from '../env'
-import { UserSchemaDocument } from "src/application/user";
+import { UserSchemaDocument } from "src/application/dto/user";
 
+type PayloadType = {
+  email: string;
+  id: string;
+}
 @Injectable()
 export class AuthService implements IAuthInterface {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService<EnvConfigModel>,
   ) { }
+  
 
   async GetCurrentUser(): Promise<User | null> {
     // Implementation here
     return null;
   }
-  async GetCurrentUserInfo(token: string | undefined): Promise<void> {
+  async GetCurrentUserInfo(): Promise<object> {
     // Implementation here
+    // const res: JwtPayload = this.jwtService.decode(token)
+    // console.log(res)
+    return {};
   }
   async GetCurrentToken(): Promise<string | null> {
     // Implementation here
     return null;
   }
   async GenerateToken(user: UserSchemaDocument): Promise<string> {
-    console.log(user);
     const accesstoken = await this.jwtService.signAsync({
-      user: {
+      userInfo: {
         id: user._id,
         email: user.email,
-        username: user.firstname,
+        username: `${user.first_name} ${user.prefix} ${user.last_name}`,
 
       }
     })

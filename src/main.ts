@@ -7,6 +7,14 @@ import { EnvConfigModel } from './infrastructure/env';
 
 function setUpSwagger(app: INestApplication): void {
   const config = new DocumentBuilder()
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'access-token'
+    )
     .setTitle('Avans Keuze Kompas API')
     .setDescription('The Avans Keuze Kompas API description')
     .setVersion('1.0')
@@ -14,16 +22,26 @@ function setUpSwagger(app: INestApplication): void {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 }
-function setUpAppConfiguration(app: INestApplication): void {
-  app.enableCors();
+function setUpAppConfiguration(app: INestApplication, configService: ConfigService,
+): void {
+  app.enableCors({
+    origin: [
+      'http://localhost:5173',
+      configService.get<string>('AI_BASE_URL_PROD'),
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
   app.useGlobalFilters();
   // app.useGlobalPipes(new ValidationPipe({}));
 }
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService<EnvConfigModel>);
+  const configServices = app.get(ConfigService);
   setUpSwagger(app);
-  setUpAppConfiguration(app);
+  setUpAppConfiguration(app, configServices);
 
   const port = configService.get('listeningPort');
   await app.listen(port);

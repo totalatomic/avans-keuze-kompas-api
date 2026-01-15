@@ -1,13 +1,22 @@
 import { Module } from "@nestjs/common";
-import { VkmService } from "src/application/vkm";
+import { VkmService } from "./application/service/vkm.service";
 import { VkmController } from "./api/controllers/vkm/vkm.controller";
 import { MongooseModule } from "@nestjs/mongoose";
-import { VkmSchema } from "src/application/vkm/dto";
+import { VkmSchema } from "src/application/dto/vkm";
 import { VkmModule } from "./api/controllers/vkm/vkm.module";
 import { ConfigModule } from "@nestjs/config";
 import { envConfiguration } from './infrastructure/env';
 import { userController, UserModule } from "./api/controllers/user";
-import { userService } from "./application/user";
+import { RecommendationModule } from "./api/controllers/ai/recommendation.module";
+import { userService } from "./application/service/user.service";
+
+import { MsgController } from "./api/controllers/msg/msg.controller";
+import { MsgService } from "./application/service/msg.service";
+import { MsgModule } from "./api/controllers/msg/msg.module";
+import { APP_GUARD } from "@nestjs/core";
+import { Authguard } from "src/infrastructure/auth/auth.guard";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,13 +28,31 @@ import { userService } from "./application/user";
       useFactory: () => ({
         uri: envConfiguration().database.url
       })
-    }), VkmModule,
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [{
+        ttl: 1000 * 60, //thirty request per one minute
+        limit: 30,
+      }]
+    }),
+    VkmModule,
     UserModule,
+    RecommendationModule,
+    MsgModule,
   ],
-  controllers: [VkmController, userController],
+  controllers: [VkmController, userController, MsgController],
   providers: [
     VkmService,
-    userService
+    userService,
+    MsgService,
+    {
+      provide: APP_GUARD,
+      useClass: Authguard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    }
   ]
 })
 export class AppModule { }
