@@ -46,7 +46,7 @@ export class UserRepositoryMongoDB implements IUserRepository {
   async setRecommendations(userId: string, recommendations: number[]): Promise<void> {
     const updated = await this.userModel.findByIdAndUpdate(
       new Types.ObjectId(userId),
-      { $set: { ai_reccomended_vkms: recommendations } },
+      { $set: { ai_recommended_vkms: recommendations } },
       { new: true },
     );
 
