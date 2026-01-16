@@ -26,7 +26,7 @@ function setUpAppConfiguration(app: INestApplication, configService: ConfigServi
 ): void {
   app.enableCors({
     origin: [
-      'https://localhost:5173',
+      'http://localhost:5173',
       configService.get<string>('WEBAPP_BASE_URL_PROD'),
       configService.get<string>('AI_BASE_URL_PROD'),
     ],
