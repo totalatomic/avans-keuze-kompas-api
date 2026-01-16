@@ -45,6 +45,7 @@ jobs:
       LISTENINGPORT: ${{ secrets.LISTENINGPORT }}
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      WEBAPP_BASE_URL_PROD: ${{secrets.WEBAPP_BASE_URL_PROD}}
       
   
     
@@ -73,4 +74,5 @@ jobs:
           package: .
 
           
+
 
