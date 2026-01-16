@@ -3,6 +3,8 @@ import { RecommendationsService } from 'src/application/service/recommendation.s
 import type { RecommendationDto } from '../../../application/dto/ai/recommendation.dto';
 import { QuestionnaireFrontendDto } from '../ai/dto/questionair-frontend.dto.js';
 import { ApiTags } from '@nestjs/swagger';
+import { get } from 'mongoose';
+import { Public } from 'src/domain/common/decorators/public.decorator';
 
 @ApiTags('AI Recommendations')
 @Controller('recommendations')
@@ -17,5 +19,15 @@ export class RecommendationController {
       req.user.userInfo.id,
       body,
     );
+  }
+  @Public()
+  @Get('ready')
+  async ready() {
+    try {
+      await this.recommendations.isReady();
+      return { status: 'ok' };
+    } catch (error) {
+      return { status: 'ai still waking up' };
+    }
   }
 }
