@@ -1,6 +1,8 @@
 import { Request } from 'express'; // express.Request
 
 export function extractTokenfromRequest(request: Request): string | undefined {
+  console.log('Extracting token from request headers or cookies');
+  console.log('Request Headers:', request);
   // 1️⃣ Try cookie first
   const cookie = request.headers.cookie; // "auth=token; other=value"
   if (!cookie) {
