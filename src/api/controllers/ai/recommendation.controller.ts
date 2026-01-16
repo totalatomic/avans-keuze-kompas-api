@@ -4,6 +4,7 @@ import type { RecommendationDto } from '../../../application/dto/ai/recommendati
 import { QuestionnaireFrontendDto } from '../ai/dto/questionair-frontend.dto.js';
 import { ApiTags } from '@nestjs/swagger';
 import { get } from 'mongoose';
+import { Public } from 'src/domain/common/decorators/public.decorator';
 
 @ApiTags('AI Recommendations')
 @Controller('recommendations')
@@ -19,7 +20,7 @@ export class RecommendationController {
       body,
     );
   }
-  
+  @Public()
   @Get('ready')
   async ready() {
     try {
