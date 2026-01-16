@@ -39,4 +39,7 @@ export class RecommendationsService {
 
     return recommendations;
   }
+  async isReady(): Promise<void> {
+    return this.aiClient.isReady();
+  }
 }
