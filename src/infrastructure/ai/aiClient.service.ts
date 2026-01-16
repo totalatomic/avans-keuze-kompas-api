@@ -35,4 +35,13 @@ private readonly baseUrl: string;
 
     return response.json();
   }
+  async isReady(): Promise<void> {
+    const response = await fetch(`${this.baseUrl}/ready`, {
+      method: 'GET',
+    });
+    
+    if (!response.ok) {
+      throw new Error(`AI not ready: ${response.status}`);
+    }
+  }
 }
