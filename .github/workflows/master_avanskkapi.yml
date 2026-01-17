@@ -41,7 +41,7 @@ jobs:
             echo "Attempt $((attempts+1)) of $max_attempts"
             
             # Run your Postman tests 
-            postman collection run 28008990-43b417c1-6a91-4429-938b-04b8fc1a7fb1 -e 28008990-686e9e91-e9b9-476b-96a5-fbfa71ce7f3c -i 28008990-77e84a18-2d51-4aa5-b53a-b4e7267c00f5 -i 28008990-7212bfb3-7d99-48e5-9c12-bc08f2fa48c3 -i 28008990-d631efd2-39aa-4882-9b46-658043239e36 -i 28008990-5a919f4c-755b-4d75-b049-5e0d290756f6 -i 28008990-4b236ff0-1ef2-4a9a-b267-da192fbeac7c -i 28008990-cb106ee5-8c54-4f60-8131-b40686544c32 -i 28008990-a0090029-03c8-4d0a-bfb3-55a0902351a8 -i 28008990-13a4bc67-3db8-4c39-9261-ef7bce6cdbf9 -i 28008990-8550661e-f850-428e-8f9f-a8fb427dd6e2 -i 28008990-ae4c722e-2d47-4b25-ac61-24862cc6ae3a || failed=true
+            postman collection run 28008990-43b417c1-6a91-4429-938b-04b8fc1a7fb1 -e 28008990-686e9e91-e9b9-476b-96a5-fbfa71ce7f3c --env-var baseUrl=https://avans-keuze-kompas-api.onrender.com --env-var BearerToken= -i 28008990-77e84a18-2d51-4aa5-b53a-b4e7267c00f5 -i 28008990-7212bfb3-7d99-48e5-9c12-bc08f2fa48c3 -i 28008990-d631efd2-39aa-4882-9b46-658043239e36 -i 28008990-5a919f4c-755b-4d75-b049-5e0d290756f6 -i 28008990-4b236ff0-1ef2-4a9a-b267-da192fbeac7c -i 28008990-cb106ee5-8c54-4f60-8131-b40686544c32 -i 28008990-a0090029-03c8-4d0a-bfb3-55a0902351a8 -i 28008990-13a4bc67-3db8-4c39-9261-ef7bce6cdbf9 -i 28008990-8550661e-f850-428e-8f9f-a8fb427dd6e2 -i 28008990-ae4c722e-2d47-4b25-ac61-24862cc6ae3a || failed=true
             
             if [ "$failed" == "true" ]; then
               echo "Tests failed. Retrying..."
@@ -59,6 +59,7 @@ jobs:
           else
             echo "API tests passed successfully after $attempts attempts."
           fi
+
 
 
 
