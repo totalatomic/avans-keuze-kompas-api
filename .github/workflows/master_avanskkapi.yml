@@ -1,78 +1,18 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy Node.js app to Azure Web App - avanskkapi
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - master
-  workflow_dispatch:
+      - main 
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read #This is required for actions/checkout
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.x'
-
-      - name: npm install, build
-        run: |
-          npm install
-          npm run build --if-present
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-app
-          path: .
-
   deploy:
+    name: Deploy to Render
     runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-    env:
-      AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
-      LISTENINGPORT: ${{ secrets.LISTENINGPORT }}
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      WEBAPP_BASE_URL_PROD: ${{secrets.WEBAPP_BASE_URL_PROD}}
-      
-  
-    
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+      - name: Deployment to production
+        uses: JorgeLNJunior/render-deploy@v1.4.5
         with:
-          name: node-app
-    
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_842A0C4A57E04870A1F13E1354526116 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D3652B3A453A4B6D87135A9829ADE538 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2611EC6A6E104339A7B07A973239F9CA }}
-          
-          
-
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'avanskkapi'
-          slot-name: 'Production'
-          package: .
-
-          
-
-
+          service_id: ${{ secrets.RENDER_SERVICE_ID }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
+          clear_cache: true
