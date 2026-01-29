@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { VkmController } from '../src/api/controllers/vkm/vkm.controller';
-import { VkmService } from '../src/application/service/vkm.service';
-import { VKM } from '../src/domain/entities';
+import { VkmController } from 'src/api/controllers/vkm/vkm.controller';
+import { VkmService } from 'src/application/service/vkm.service';
+import { VKM } from 'src/domain/entities';
 import { NotFoundException } from '@nestjs/common';
 
 describe('VkmController', () => {

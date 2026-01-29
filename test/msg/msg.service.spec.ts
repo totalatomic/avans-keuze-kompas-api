@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MsgService } from '../src/application/service/msg.service';
-import { MsgRepositoryMongoDB } from '../src/infrastructure/repositories/msg.repository.mongodb';
-import { MSG } from '../src/domain/entities';
+import { MsgService } from 'src/application/service/msg.service';
+import { MsgRepositoryMongoDB } from 'src/infrastructure/repositories/msg.repository.mongodb';
+import { MSG } from 'src/domain/entities';
 
 describe('MsgService', () => {
   let service: MsgService;

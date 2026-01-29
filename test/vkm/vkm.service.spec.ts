@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { VkmService } from '../src/application/service/vkm.service';
-import { VkmRepositoryMongoDB } from '../src/infrastructure/repositories/vkm.repository.mongodb';
-import { VkmRepositoryMongoDB_en } from '../src/infrastructure/repositories/vkm.repository.mongodb_en';
-import { VKM } from '../src/domain/entities';
+import { VkmService } from 'src/application/service/vkm.service';
+import { VkmRepositoryMongoDB } from 'src/infrastructure/repositories/vkm.repository.mongodb';
+import { VkmRepositoryMongoDB_en } from 'src/infrastructure/repositories/vkm.repository.mongodb_en';
+import { VKM } from 'src/domain/entities';
 import { NotFoundException } from '@nestjs/common';
 
 describe('VkmService', () => {

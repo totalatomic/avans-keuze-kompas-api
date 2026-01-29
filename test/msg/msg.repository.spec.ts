@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
-import { MsgRepositoryMongoDB } from '../src/infrastructure/repositories/msg.repository.mongodb';
-import { MSG } from '../src/domain/entities';
+import { MsgRepositoryMongoDB } from 'src/infrastructure/repositories/msg.repository.mongodb';
+import { MSG } from 'src/domain/entities';
 
 describe('MsgRepositoryMongoDB', () => {
   let repository: MsgRepositoryMongoDB;

@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MsgController } from '../src/api/controllers/msg/msg.controller';
-import { MsgService } from '../src/application/service/msg.service';
-import { CreateMsgDto } from '../src/application/dto/msg';
-import { MSG } from '../src/domain/entities';
+import { MsgController } from 'src/api/controllers/msg/msg.controller';
+import { MsgService } from 'src/application/service/msg.service';
+import { CreateMsgDto } from 'src/application/dto/msg';
+import { MSG } from 'src/domain/entities';
 
 describe('MsgController', () => {
   let controller: MsgController;
