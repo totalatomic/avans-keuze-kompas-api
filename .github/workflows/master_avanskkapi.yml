@@ -24,11 +24,11 @@ jobs:
         run: npm audit --audit-level=high
 
       - name: Run Snyk to check for vulnerabilities
-      uses: snyk/actions/node@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: --severity-threshold=high
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
 
   deploy:
     name: Deploy to Render
@@ -84,4 +84,5 @@ jobs:
           else
             echo "API tests passed successfully after $attempts attempts."
           fi
+
 
