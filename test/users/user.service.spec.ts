@@ -111,9 +111,9 @@ describe('userService', () => {
     it('returns updated user dto on success', async () => {
       jest.spyOn(service, 'getUser').mockResolvedValue({ chosenVKMs: [] } as any);
       mockUserRepo.updateChoices.mockResolvedValue({ id: 'uid' });
-      jest.spyOn(service, 'buildUserDto').mockImplementation((u: any, t: string) => ({ ...u, token: t } as any));
+      jest.spyOn(service, 'buildUserDto').mockImplementation((u: any, t: string) => ({ fullName: 'John Doe', ...u, token: t } as any));
       const res = await service.updateChoices('uid', []);
-      expect(res.fullName).toBe('string');
+      expect(res.fullName).toBe('John Doe');
     });
 
     it('throws BadRequestException when update fails', async () => {
@@ -129,9 +129,9 @@ describe('userService', () => {
       mockUserRepo.findById = mockUserRepo.findById || jest.fn();
       mockUserRepo.findById.mockResolvedValue(currUser);
       mockUserRepo.updateSettings.mockResolvedValue({ id: 'uid', ...currUser });
-      jest.spyOn(service, 'buildUserDto').mockImplementation((u: any, t: string) => ({ ...u, token: t } as any));
+      jest.spyOn(service, 'buildUserDto').mockImplementation((u: any, t: string) => ({ fullName: 'Jane Smith', ...u, token: t } as any));
       const res = await service.updateSettings('uid', {} as any);
-      expect(res.fullName).toBe('string');
+      expect(res.fullName).toBe('Jane Smith');
     });
 
     it('throws BadRequestException when repository update fails', async () => {
