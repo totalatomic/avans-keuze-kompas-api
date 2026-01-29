@@ -1,11 +1,11 @@
 import { IAuthInterface } from "../../domain/interfaces";
 import { User } from "../../domain/entities";
-import bcrypt from "node_modules/bcryptjs";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { EnvConfigModel } from '../env'
 import { UserSchemaDocument } from "src/application/dto/user";
+import * as bcrypt from 'bcrypt';
 
 type PayloadType = {
   email: string;
@@ -17,7 +17,7 @@ export class AuthService implements IAuthInterface {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService<EnvConfigModel>,
   ) { }
-  
+
 
   async GetCurrentUser(): Promise<User | null> {
     // Implementation here
