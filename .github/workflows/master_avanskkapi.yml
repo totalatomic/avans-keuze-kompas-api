@@ -13,11 +13,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci
-      - run: npm audit --audit-level=high
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Security audit
+        run: npm audit --audit-level=high
+
   deploy:
     name: Deploy to Render
     runs-on: ubuntu-latest
+    needs: [pre_deploy] # 🔒 THIS IS CRITICAL
     steps:
       - name: Deployment to production
         uses: JorgeLNJunior/render-deploy@v1.4.5
